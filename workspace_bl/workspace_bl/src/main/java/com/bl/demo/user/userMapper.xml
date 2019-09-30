@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bl.demo.TempMapper">
+<mapper namespace="com.bl.demo.user.UserMapper">
     <insert id="addUser" parameterType="map">
         INSERT into user (loginName, loginPwd, userName, userCode,userEmail) values (#{loginName},#{loginPwd},#{userName},#{userCode},#{userEmail})
     </insert>
@@ -10,11 +10,15 @@
         update user set loginPwd =#{loginPwd} where userCode=#{userCode}
     </update>
 
-    <select id="getTempById" parameterType="int" resultType="com.bl.demo.Temp">
-        select * from sql_bl_temp where id = #{id}
+    <select id="addTkn" parameterType="map">
+        update user set token= #{token} where loginName=#{loginName}
     </select>
 
-    <select id="getTempsInFive" resultType="com.bl.demo.Temp">
-        select * from sql_bl_temp ORDER BY time DESC LIMIT 5
+    <select id="searchEmail" parameterType="string" resultType="string">
+        select from user userEmail where loginName=#{loginName}
+    </select>
+
+    <select id="getTkn" resultType="string" parameterType="string">
+        select token from user where loginName=#{loginName}
     </select>
 </mapper>
