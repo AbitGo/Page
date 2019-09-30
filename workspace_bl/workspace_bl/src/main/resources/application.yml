@@ -34,3 +34,4 @@ spring:
       socketFactory:
         class: javax.net.ssl.SSLSocketFactory
     debug: true
+

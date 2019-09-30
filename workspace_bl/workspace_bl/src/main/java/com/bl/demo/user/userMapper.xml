@@ -10,12 +10,12 @@
         update user set loginPwd =#{loginPwd} where userCode=#{userCode}
     </update>
 
-    <select id="addTkn" parameterType="map">
+    <update id="addTkn" parameterType="map">
         update user set token= #{token} where loginName=#{loginName}
-    </select>
+    </update>
 
     <select id="searchEmail" parameterType="string" resultType="string">
-        select from user userEmail where loginName=#{loginName}
+        select userEmail from user where loginName=#{loginName}
     </select>
 
     <select id="getTkn" resultType="string" parameterType="string">

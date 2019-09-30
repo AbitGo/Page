@@ -23,15 +23,15 @@ public class TotolController {
     @Autowired
     MailService mailService;
 
-    @RequestMapping(value = "/User/UserLogin", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/User/UserAdd", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String UserLogin(@RequestBody String LoginJSON) throws Exception {
         JSONObject LoginJson = JSONObject.parseObject(LoginJSON);
-        //è·å–ç™»å½•åä¸ç™»å½•å¯†ç 
+        //»ñÈ¡µÇÂ¼ÃûÓëµÇÂ¼ÃÜÂë
         String loginName = LoginJson.getString("loginName");
         String loginPwd = LoginJson.getString("loginPwd");
         String userName = LoginJson.getString("userName");
-        String userCode = LoginJson.getString("userCode");
+        String userCode = "Usr"+PubicMethod.getAcademeCode();
         String userEmail = LoginJson.getString("userEmail");
         Map<String,Object> param = new HashMap<>();
         param.put("loginName",loginName);
@@ -44,11 +44,11 @@ public class TotolController {
         {
             int result = userService.addUser(param);
             jsonObject.put("flag",1);
-            jsonObject.put("msg","æ³¨å†ŒæˆåŠŸ");
+            jsonObject.put("msg","×¢²á³É¹¦");
         }catch (Exception e)
         {
             jsonObject.put("flag", "0");
-            jsonObject.put("msg", "æ³¨å†Œå¤±è´¥,ç”¨æˆ·åå·²å­˜åœ¨");
+            jsonObject.put("msg", "×¢²áÊ§°Ü,ÓÃ»§ÃûÒÑ´æÔÚ");
         }
         return jsonObject.toString();
     }
@@ -57,7 +57,7 @@ public class TotolController {
     @CrossOrigin
     public String UserToken(@RequestBody String TokenJSON) throws Exception {
         JSONObject tokenJSON = JSONObject.parseObject(TokenJSON);
-        //è·å–ç™»å½•åä¸ç™»å½•å¯†ç 
+        //»ñÈ¡µÇÂ¼ÃûÓëµÇÂ¼ÃÜÂë
         String loginName = tokenJSON.getString("loginName");
 
         String email = userService.searchEmail(loginName);
@@ -65,7 +65,7 @@ public class TotolController {
         JSONObject jsonObject = new JSONObject();
         if(email==null){
             jsonObject.put("flag", "0");
-            jsonObject.put("msg", "ç™»é™†åä¸å­˜åœ¨");
+            jsonObject.put("msg", "µÇÂ½Ãû²»´æÔÚ");
             return jsonObject.toString();
         }
         Map<String,Object> param = new HashMap<>();
@@ -75,11 +75,7 @@ public class TotolController {
         param.put("token",token);
 
         try{
-            StringWriter mail = new StringWriter();
-            User user = new User();
-            user.setToken(token);
-            user.setLoginName(loginName);
-            mailService.sendSimpleMail("15695203200@163.com",email,"ä¿®æ”¹å¯†ç é‚®ä»¶","ä¿®æ”¹å¯†ç é‚®ä»¶",token);
+            mailService.sendSimpleMail("15695203200@163.com",email,"ĞŞ¸ÄÃÜÂëÓÊ¼ş","ĞŞ¸ÄÃÜÂëÓÊ¼ş",token);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -87,10 +83,11 @@ public class TotolController {
 
         if(result!=0){
             jsonObject.put("flag", "1");
-            jsonObject.put("msg", "éªŒè¯ç å·²ç»å‘é€è‡³é‚®ç®±ï¼Œæ¸…æŸ¥æ”¶");
+            jsonObject.put("msg", "ÑéÖ¤ÂëÒÑ¾­·¢ËÍÖÁÓÊÏä£¬Çå²éÊÕ");
+            jsonObject.put("token",token);
         }else{
             jsonObject.put("flag", "0");
-            jsonObject.put("msg", "å‘é€å¤±è´¥ï¼Œè¯·éªŒè¯é‚®ç®±æ˜¯å¦æ­£ç¡®");
+            jsonObject.put("msg", "·¢ËÍÊ§°Ü£¬ÇëÑéÖ¤ÓÊÏäÊÇ·ñÕıÈ·");
             jsonObject.put("token",token);
         }
         return jsonObject.toString();
