@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bl.demo.TempMapper">
+    <insert id="addUser" parameterType="map">
+        INSERT into user (loginName, loginPwd, userName, userCode,userEmail) values (#{loginName},#{loginPwd},#{userName},#{userCode},#{userEmail})
+    </insert>
+
+    <update id="changePwd" parameterType="map">
+        update user set loginPwd =#{loginPwd} where userCode=#{userCode}
+    </update>
+
+    <select id="getTempById" parameterType="int" resultType="com.bl.demo.Temp">
+        select * from sql_bl_temp where id = #{id}
+    </select>
+
+    <select id="getTempsInFive" resultType="com.bl.demo.Temp">
+        select * from sql_bl_temp ORDER BY time DESC LIMIT 5
+    </select>
+</mapper>
