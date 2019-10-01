@@ -3,6 +3,7 @@ package com.bl.demo;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bl.DemoApplication;
+import com.bl.demo.Redis.RedisService;
 import com.bl.demo.device.DeviceMapper;
 import com.bl.demo.device.DeviceService;
 import com.bl.demo.pojo.User;
@@ -29,6 +30,9 @@ public class TotolController {
 
     @Autowired
     DeviceService deviceService;
+
+    @Autowired
+    RedisService redisService;
 
     @RequestMapping(value = "/User/UserAdd", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
@@ -223,6 +227,29 @@ public class TotolController {
         }else{
             jsonObject.put("flag","0");
             jsonObject.put("msg","查询数据失败");
+        }
+        return jsonObject.toString();
+    }
+
+    @RequestMapping(value = "/Device/DeviceNowDataGet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String DeviceNowDataGet(@RequestBody String GetJson) throws Exception {
+        JSONObject getJson = JSONObject.parseObject(GetJson);
+        //获取登录名与登录密码
+        String deviceCode = getJson.getString("deviceCode");
+        Map<String,Object> result = redisService.GetHashKeyAndValue("deviceData_page1:"+deviceCode);
+        JSONObject jsonObject = new JSONObject();
+        if(!result.isEmpty()){
+            jsonObject.put("deviceCode",result.get("deviceCode"));
+            jsonObject.put("temp",result.get("temp"));
+            jsonObject.put("sound",result.get("sound"));
+            jsonObject.put("timeRec",result.get("timeRec"));
+            jsonObject.put("light",result.get("light"));
+            jsonObject.put("flag","1");
+            jsonObject.put("msg","查询设备成功");
+        }else{
+            jsonObject.put("flag","0");
+            jsonObject.put("msg","查询设备失败");
         }
         return jsonObject.toString();
     }

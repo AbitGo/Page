@@ -1,6 +1,7 @@
 package com.bl.demo;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bl.demo.Redis.RedisService;
 import com.bl.demo.device.DeviceMapper;
 import com.bl.demo.device.DeviceService;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
@@ -19,14 +20,14 @@ import java.util.Map;
 public class UDPServer implements Runnable  {
 
     @Autowired
-    private DeviceMapper deviceMapper;
+    private RedisService redisService;
 
     public static UDPServer udpServer;
 
     @PostConstruct
     public void init(){
         udpServer = this;
-        udpServer.deviceMapper = this.deviceMapper;
+        udpServer.redisService = this.redisService;
     }
 
     public static void addTemp(String data)
@@ -39,15 +40,16 @@ public class UDPServer implements Runnable  {
         String light = Json.getString("light");
 
         Map<String,Object> param = new HashMap();
+        String now = System.currentTimeMillis()/1000+"";
         param.put("deviceCode",deviceCode);
         param.put("temp",temp);
         param.put("hum",hum);
         param.put("sound",sound);
         param.put("light",light);
-        param.put("timeRec",System.currentTimeMillis()/1000);
+        param.put("timeRec",now);
 
+        Boolean result = udpServer.redisService.AddHashKeyAndValue("deviceData_page1:"+deviceCode,param);
         System.out.println("data:"+param);
-        udpServer.deviceMapper.addDeviceData(param);
     }
 
     @Override

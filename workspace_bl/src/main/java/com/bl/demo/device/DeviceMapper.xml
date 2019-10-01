@@ -18,6 +18,10 @@
         select * from record where deviceCode = #{deviceCode} order by timeRec desc Limit 5;
     </select>
 
+    <select id="getDevice" parameterType="string" resultType="string">
+        select deviceCode from device;
+    </select>
+
     <insert id="addDeviceData" parameterType="map">
         insert into record (hum, temp, sound, light, deviceCode, timeRec)  value (#{hum},#{temp},#{sound},#{light},#{deviceCode},#{timeRec})
     </insert>

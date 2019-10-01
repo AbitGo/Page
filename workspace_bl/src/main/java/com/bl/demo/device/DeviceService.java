@@ -24,6 +24,10 @@ public class DeviceService {
         return deviceMapper.getRecordDataByDeviceCode(param);
     }
 
+    public List<String> getDevice(){
+        return deviceMapper.getDevice();
+    }
+
     public int addDeviceData(Map<String,Object> param){
         return deviceMapper.addDeviceData(param);
     }

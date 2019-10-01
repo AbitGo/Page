@@ -9,6 +9,8 @@ import java.util.Map;
 public interface DeviceMapper {
     int addDeviceByUserCode(Map<String,Object> param);
     List<Map<String,Object>> getDeviceBuUserCode(String userCode);
+
+    List<String> getDevice();
     int deleteDeviceByUserCode(Map<String,Object> param);
     List<Map<String,Object>> getRecordDataByDeviceCode(String param);
     int addDeviceData(Map<String,Object> param);
