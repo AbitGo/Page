@@ -7,7 +7,7 @@
     </insert>
 
     <update id="changePwd" parameterType="map">
-        update user set loginPwd =#{loginPwd} where userCode=#{userCode}
+        update user set loginPwd =#{loginPwd} where loginName=#{loginName}
     </update>
 
     <update id="addTkn" parameterType="map">

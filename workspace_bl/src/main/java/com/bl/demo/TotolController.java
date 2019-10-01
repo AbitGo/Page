@@ -1,7 +1,10 @@
 package com.bl.demo;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bl.DemoApplication;
+import com.bl.demo.device.DeviceMapper;
+import com.bl.demo.device.DeviceService;
 import com.bl.demo.pojo.User;
 import com.bl.demo.user.MailService;
 import com.bl.demo.user.UserService;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +26,9 @@ public class TotolController {
 
     @Autowired
     MailService mailService;
+
+    @Autowired
+    DeviceService deviceService;
 
     @RequestMapping(value = "/User/UserAdd", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
@@ -43,7 +50,7 @@ public class TotolController {
         try
         {
             int result = userService.addUser(param);
-            jsonObject.put("flag",1);
+            jsonObject.put("flag","1");
             jsonObject.put("msg","注册成功");
         }catch (Exception e)
         {
@@ -95,4 +102,95 @@ public class TotolController {
         return jsonObject.toString();
     }
 
+    @RequestMapping(value = "/User/ChangePWD", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String ChangePWD(@RequestBody String tokenJSON) throws Exception {
+        JSONObject json = JSONObject.parseObject(tokenJSON);
+        //获取登录名与登录密码
+        String loginName = json.getString("loginName");
+        String newLoginPWD = json.getString("newLoginPWD");
+        String token = json.getString("token");
+
+
+        Map<String,Object> param = new HashMap<>();
+        param.put("loginPwd",newLoginPWD);
+        param.put("loginName",loginName);
+
+        String SQLToken = userService.getTkn(loginName);
+        int result =0;
+        JSONObject jsonObject = new JSONObject();
+        if(SQLToken==null)
+        {
+            jsonObject.put("flag","0");
+            jsonObject.put("msg","用户不存在");
+            return jsonObject.toString();
+        }
+        if(SQLToken.equals(token)){
+            result = userService.changePwd(param);
+        }
+
+
+        if(result!=0){
+            jsonObject.put("flag","1");
+            jsonObject.put("msg","修改密码成功");
+        }else{
+            jsonObject.put("flag", "0");
+            jsonObject.put("msg", "修改失败,请联系管理员");
+        }
+        return jsonObject.toString();
+    }
+
+
+    @RequestMapping(value = "/Device/DeviceAdd", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String DeviceAdd(@RequestBody String AddJson) throws Exception {
+        JSONObject addJson = JSONObject.parseObject(AddJson);
+        //获取登录名与登录密码
+        String userCode = addJson.getString("userCode");
+        String deviceCode = addJson.getString("deviceCode");
+
+        Map<String,Object> param = new HashMap<>();
+        param.put("userCode",userCode);
+        param.put("deviceCode",deviceCode);
+
+        int result = deviceService.addDeviceByUserCode(param);
+        JSONObject jsonObject = new JSONObject();
+        if(result!=0){
+            jsonObject.put("flag","1");
+            jsonObject.put("msg","添加设备成功");
+        }else{
+            jsonObject.put("flag","0");
+            jsonObject.put("msg","添加设备失败");
+        }
+        return jsonObject.toString();
+    }
+
+    @RequestMapping(value = "/Device/DeviceGet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String DeviceGet(@RequestBody String GetJson) throws Exception {
+        JSONObject getJson = JSONObject.parseObject(GetJson);
+        //获取登录名与登录密码
+        String userCode = getJson.getString("userCode");
+
+        List<Map<String,Object>> result = deviceService.getDeviceBuUserCode(userCode);
+
+        JSONArray jsonArray = new JSONArray();
+        for(Map<String,Object> param:result){
+            JSONObject paramJSON = new JSONObject();
+            paramJSON.put("deviceCode",param.get("deviceCode"));
+            paramJSON.put("userCode",param.get("userCode"));
+            jsonArray.add(paramJSON);
+        }
+        JSONObject jsonObject = new JSONObject();
+
+        if(!result.isEmpty()){
+            jsonObject.put("flag","1");
+            jsonObject.put("msg","查询设备成功");
+            jsonObject.put("data",jsonArray);
+        }else{
+            jsonObject.put("flag","0");
+            jsonObject.put("msg","查询设备失败");
+        }
+        return jsonObject.toString();
+    }
 }

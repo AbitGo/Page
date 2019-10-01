@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bl.demo.device.DeviceMapper">
+    <insert id="addDeviceByUserCode" parameterType="map">
+        insert into device (deviceCode, userCode) value (#{deviceCode},#{userCode})
+    </insert>
+
+    <select id="getDeviceBuUserCode" parameterType="map" resultType="map">
+        select deviceCode,userCode from device where userCode = #{userCode}
+    </select>
+
+    <delete id="deleteDeviceByUserCode" parameterType="map">
+        delete from device where deviceCode = #{deviceCode}
+    </delete>
+</mapper>
