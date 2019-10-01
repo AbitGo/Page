@@ -19,4 +19,12 @@ public class DeviceService {
     public int deleteDeviceByUserCode(Map<String,Object> param){
         return deviceMapper.deleteDeviceByUserCode(param);
     }
+
+    public List<Map<String,Object>> getRecordDataByDeviceCode(String param){
+        return deviceMapper.getRecordDataByDeviceCode(param);
+    }
+
+    public int addDeviceData(Map<String,Object> param){
+        return deviceMapper.addDeviceData(param);
+    }
 }

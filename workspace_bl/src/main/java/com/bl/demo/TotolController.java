@@ -193,4 +193,37 @@ public class TotolController {
         }
         return jsonObject.toString();
     }
+
+    @RequestMapping(value = "/Device/DeviceRecGet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String DeviceRecGet(@RequestBody String GetJson) throws Exception {
+        JSONObject getJson = JSONObject.parseObject(GetJson);
+        //获取登录名与登录密码
+        String deviceCode = getJson.getString("deviceCode");
+
+        List<Map<String,Object>> result = deviceService.getRecordDataByDeviceCode(deviceCode);
+
+        JSONArray jsonArray = new JSONArray();
+        for(Map<String,Object> param:result){
+            JSONObject paramJSON = new JSONObject();
+            paramJSON.put("hum",param.get("hum"));
+            paramJSON.put("temp",param.get("temp"));
+            paramJSON.put("sound",param.get("sound"));
+            paramJSON.put("light",param.get("light"));
+            paramJSON.put("deviceCode",param.get("deviceCode"));
+            paramJSON.put("timeRec",param.get("timeRec"));
+            jsonArray.add(paramJSON);
+        }
+        JSONObject jsonObject = new JSONObject();
+
+        if(!result.isEmpty()){
+            jsonObject.put("flag","1");
+            jsonObject.put("msg","查询数据成功");
+            jsonObject.put("data",jsonArray);
+        }else{
+            jsonObject.put("flag","0");
+            jsonObject.put("msg","查询数据失败");
+        }
+        return jsonObject.toString();
+    }
 }

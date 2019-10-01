@@ -13,4 +13,12 @@
     <delete id="deleteDeviceByUserCode" parameterType="map">
         delete from device where deviceCode = #{deviceCode}
     </delete>
+    
+    <select id="getRecordDataByDeviceCode" parameterType="string" resultType="map">
+        select * from record where deviceCode = #{deviceCode} order by timeRec desc Limit 5;
+    </select>
+
+    <insert id="addDeviceData" parameterType="map">
+        insert into record (hum, temp, sound, light, deviceCode, timeRec)  value (#{hum},#{temp},#{sound},#{light},#{deviceCode},#{timeRec})
+    </insert>
 </mapper>
