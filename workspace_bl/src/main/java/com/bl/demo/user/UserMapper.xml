@@ -21,4 +21,9 @@
     <select id="getTkn" resultType="string" parameterType="string">
         select token from user where loginName=#{loginName}
     </select>
+
+    <select id="login" parameterType="map" resultType="map">
+        select * from user where loginName = #{loginName}
+    </select>
+
 </mapper>

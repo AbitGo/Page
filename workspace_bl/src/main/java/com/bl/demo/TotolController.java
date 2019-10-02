@@ -36,7 +36,7 @@ public class TotolController {
 
     @RequestMapping(value = "/User/UserAdd", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public String UserLogin(@RequestBody String LoginJSON) throws Exception {
+    public String UserAdd(@RequestBody String LoginJSON) throws Exception {
         JSONObject LoginJson = JSONObject.parseObject(LoginJSON);
         //获取登录名与登录密码
         String loginName = LoginJson.getString("loginName");
@@ -63,6 +63,45 @@ public class TotolController {
         }
         return jsonObject.toString();
     }
+    @RequestMapping(value = "/User/UserLogin", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String UserLogin(@RequestBody String LoginJSON) throws Exception {
+        JSONObject LoginJson = JSONObject.parseObject(LoginJSON);
+        //获取登录名与登录密码
+        String loginName = LoginJson.getString("loginName");
+        String loginPwd = LoginJson.getString("loginPwd");
+        Map<String,Object> param = new HashMap<>();
+        param.put("loginName",loginName);
+        param.put("loginPwd",loginPwd);
+        Map<String,Object> result = userService.login(param);
+
+        JSONObject jsonObject = new JSONObject();
+        if(result==null){
+            jsonObject.put("flag","0");
+            jsonObject.put("msg","用户名不存在");
+            return jsonObject.toString();
+        }
+        else
+        {
+            String pwd = (String) result.get("loginPwd");
+            if(!pwd.equals(loginPwd)){
+                jsonObject.put("flag","0");
+                jsonObject.put("msg","密码不正确");
+                return jsonObject.toString();
+            }else
+            {
+                jsonObject.put("flag","1");
+                jsonObject.put("msg","登陆成功");
+                jsonObject.put("loginName",result.get("loginName"));
+                jsonObject.put("loginPwd",result.get("loginPwd"));
+                jsonObject.put("userName",result.get("userName"));
+                jsonObject.put("userCode",result.get("userCode"));
+                jsonObject.put("userEmail",result.get("userEmail"));
+            }
+        }
+        return jsonObject.toString();
+    }
+
 
     @RequestMapping(value = "/User/UserToken", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin

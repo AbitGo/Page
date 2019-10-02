@@ -31,4 +31,6 @@ public class DeviceService {
     public int addDeviceData(Map<String,Object> param){
         return deviceMapper.addDeviceData(param);
     }
+
+
 }

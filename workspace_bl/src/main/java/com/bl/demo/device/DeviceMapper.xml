@@ -25,4 +25,6 @@
     <insert id="addDeviceData" parameterType="map">
         insert into record (hum, temp, sound, light, deviceCode, timeRec)  value (#{hum},#{temp},#{sound},#{light},#{deviceCode},#{timeRec})
     </insert>
+
+
 </mapper>

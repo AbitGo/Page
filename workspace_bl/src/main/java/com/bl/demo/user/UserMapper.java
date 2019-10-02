@@ -12,6 +12,7 @@ public interface UserMapper {
     public int changePwd(Map<String,Object> param);
     //根据usertoken添加token
     public int addTkn(Map<String,Object> param);
+    public Map<String,Object> login(Map<String,Object> param);
     //通过loginName获取邮箱以及UserCode
     public String searchEmail(String loginName);
     public String getTkn(String loginName);

@@ -16,7 +16,7 @@ public class timingService {
     DeviceService deviceService;
 
     //每10分钟添加数据
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     public void getPeriodData() throws Exception {
         List<String> deviceList = deviceService.getDevice();
         Map<String,Object> param = new HashMap<>();

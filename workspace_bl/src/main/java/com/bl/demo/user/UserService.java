@@ -28,4 +28,8 @@ public class UserService {
     public String searchEmail(String loginName){
         return userMapper.searchEmail(loginName);
     }
+
+    public Map<String,Object> login(Map<String,Object> param){
+        return userMapper.login(param);
+    }
 }
