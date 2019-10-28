@@ -282,6 +282,7 @@ public class TotolController {
             jsonObject.put("deviceCode",result.get("deviceCode"));
             jsonObject.put("temp",result.get("temp"));
             jsonObject.put("sound",result.get("sound"));
+            jsonObject.put("hum",result.get("hum"));
             jsonObject.put("timeRec",result.get("timeRec"));
             jsonObject.put("light",result.get("light"));
             jsonObject.put("flag","1");
