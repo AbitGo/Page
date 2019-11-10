@@ -23,7 +23,43 @@
     </select>
 
     <select id="login" parameterType="map" resultType="map">
-        select * from user where loginName = #{loginName}
+        select loginName,loginPwd,token,userName,userCode,userEmail,userRole,userDept,
+        (SELECT roleName FROM role WHERE roleId=userRole and departmentId=userDept LIMIT 1)as roleName,
+        (SELECT departmentName FROM role WHERE roleId=userRole and departmentId=userDept LIMIT 1)as departmentName
+        from user where loginName = #{loginName}
     </select>
+
+    <select id="getCheckInAndIsCheck" resultType="map" parameterType="map">
+        select * from checkTable where userCode = #{userCode} and checkMonth = #{checkMonth} and checkYear=#{checkYear}
+    </select>
+    <insert id="addCheckInAndIsCheck" parameterType="map">
+        insert into checktable (checkCount, checkingIn, checkYear, userCode, checkMonth) values (#{checkCount}, #{checkingIn}, #{checkYear}, #{userCode}, #{checkMonth})
+    </insert>
+
+    <update id="updataCheckInAndIsCheck" parameterType="map">
+        update checktable set checkCount=#{checkCount},checkingIn=#{checkingIn} where userCode = #{userCode} and checkMonth = #{checkMonth} and checkYear=#{checkYear}
+    </update>
+
+    <select id="getSalary" parameterType="map" resultType="map">
+        select * from salary where year_s = #{year} and month_s = #{month} and userCode = #{userCode};
+    </select>
+
+    <insert id="addSalary" parameterType="map">
+        <foreach separator=";" collection="list" item="SalaryPojo" index="index">
+            insert into salary
+            <set>
+                year_s =#{SalaryPojo.checkYear},month_s =#{SalaryPojo.checkMonth},salary =#{SalaryPojo.salary},workDay =#{SalaryPojo.checkCount},userCode =#{SalaryPojo.userCode}
+            </set>
+        </foreach>
+    </insert>
+
+    <select id="getCheckUser" parameterType="map" resultType="map">
+        select c.userCode,checkMonth,checkYear,checkCount,
+        (select roleSalary from role as r where userCode = c.userCode LIMIT 1)
+        as roleSalary from checktable as c where checkYear = #{checkYear} and checkMonth=#{checkMonth}
+    </select>
+
+
+
 
 </mapper>
