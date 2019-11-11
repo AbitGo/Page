@@ -34,5 +34,7 @@ public interface UserMapper {
 
     //获取当前月打卡的人
     public List<Map<String,Object>> getCheckUser(Map<String,Object> param);
+    public List<Map<String,Object>> getDeptAndRole();
+
 
 }

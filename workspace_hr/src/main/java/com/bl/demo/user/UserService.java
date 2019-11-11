@@ -62,4 +62,7 @@ public class UserService {
         return userMapper.getCheckUser(param);
     }
 
+    public List<Map<String,Object>> getDeptAndRole(){
+        return userMapper.getDeptAndRole();
+    }
 }

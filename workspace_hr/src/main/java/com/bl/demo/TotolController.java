@@ -361,4 +361,36 @@ public class TotolController {
             return jsonObject.toString();
         }
     }
+
+    @RequestMapping(value = "/User/getDeptAndRole", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String GetDept() throws Exception {
+
+        List<Map<String,Object>> result = userService.getDeptAndRole();
+        List<SalaryPojo> param_add = new ArrayList<>();
+
+        JSONArray jsonArray = new JSONArray();
+
+        for(Map<String,Object> a_param: result){
+            JSONObject i = new JSONObject();
+            i.put("roleId",a_param.get("roleId"));
+            i.put("roleName",a_param.get("roleName"));
+            i.put("departmentName",a_param.get("departmentName"));
+            i.put("departmentId",a_param.get("departmentId"));
+            jsonArray.add(i);
+        }
+        JSONObject jsonObject = new JSONObject();
+        if (result == null) {
+            jsonObject.put("flag", "0");
+            jsonObject.put("msg", "获取失败");
+            return jsonObject.toString();
+        }else{
+            jsonObject.put("flag", "1");
+            jsonObject.put("msg","获取成功");
+            jsonObject.put("data",jsonArray);
+            return jsonObject.toString();
+        }
+    }
+
+
 }
