@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bl.demo.tour.TourMapper">
+
+    <insert id="addUser" parameterType="map">
+        insert into user_t(loginName, loginPassword, userCode, userPhone)
+        values (#{loginName},#{loginPassword},#{userCode},#{userPhone})
+    </insert>
+
+    <insert id="addTour" parameterType="map">
+        insert into tour_t (tourName, tourCode, posLat, poslng,timeAdd)
+        values (#{tourName},#{tourCode},#{posLat},#{poslng},#{timeAdd})
+    </insert>
+
+    <delete id="deleteTour" parameterType="string">
+        delete from tour_t where tourCode=#{tourCode}
+    </delete>
+
+    <select id="getTourList" parameterType="map" resultType="map">
+        select * from tour_t where tourName like concat ('%',#{name},'%') order by timeAdd
+    </select>
+
+    <select id="existDreamList" parameterType="map" resultType="long">
+        select count(*) from dreamlist_t where tourCode=#{tourCode} and userCode=#{userCode}
+    </select>
+
+    <insert id="addDreamList" parameterType="map">
+        insert into dreamlist_t(tourCode, timeAdd, userCode,dreamListCode)
+        values(#{tourCode},#{timeAdd},#{userCode},#{dreamListCode})
+    </insert>
+
+    <delete id="deleteDreamList" parameterType="string">
+        delete from dreamlist_t where dreamListCode = #{dreamListCode}
+    </delete>
+
+    <select id="getDreamList" parameterType="string" resultType="map">
+        SELECT
+         tour_t.tourName,tour_t.tourCode,dt.userCode
+        FROM
+            dreamlist_t AS dt
+        INNER JOIN tour_t ON tour_t.tourCode = dt.tourCode
+        WHERE
+            dt.userCode = #{userCode}
+        GROUP BY dt.timeAdd
+    </select>
+
+    <insert id="addTourComment" parameterType="map">
+        insert into comment_t(tourCode, commentCode, commentText,userCode)
+        values(#{tourCode},#{commentCode},#{commentText},#{userCode})
+    </insert>
+
+    <select id="getTourComment" parameterType="string" resultType="map">
+        SELECT
+            tourCode,
+            commentText,
+            commentCode,
+            loginName
+        FROM
+            comment_t
+        INNER JOIN user_t ON user_t.userCode = comment_t.userCode
+        WHERE
+            tourCode =  #{tourCode}
+    </select>
+    
+    <select id="statDreamList" resultType="map">
+        SELECT
+            tour_t.tourCode as tourCode,
+            count(dreamListCode) as numCount,
+            tourName
+        FROM
+            dreamlist_t
+        INNER JOIN tour_t on tour_t.tourCode = dreamlist_t.tourCode
+        GROUP BY
+            dreamListCode
+        LIMIT 5
+    </select>
+</mapper>

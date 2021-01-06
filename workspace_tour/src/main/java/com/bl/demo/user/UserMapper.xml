@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bl.demo.user.UserMapper">
+    <insert id="addUser" parameterType="map">
+        INSERT into user_t (loginName, loginPassword,userCode,userPhone)
+        values (#{loginName},#{loginPassword},#{userCode},#{userPhone})
+    </insert>
+
+    <select id="login" parameterType="map" resultType="map">
+        select * from user_t where loginName = #{loginName}
+    </select>
+
+    <update id="updateUserInfo" parameterType="map">
+        update user_t set userPhone =#{userPhone},loginName = #{loginName}
+        where userCode = #{userCode}
+    </update>
+    <update id="updateUserPwd" parameterType="map">
+        update user_t set loginPassword =#{loginPassword}
+        where userCode = #{userCode}
+    </update>
+
+    <select id="getUserList" resultType="map">
+        select * from user_t
+    </select>
+
+
+</mapper>
