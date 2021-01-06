@@ -4,12 +4,17 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bl.demo.tour.TourService;
 import com.bl.demo.user.UserService;
+import com.bl.utli.Attribute;
 import com.bl.utli.PubicMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -201,6 +206,16 @@ public class TotolController {
                 innerJSON.put("posLat",resultInner.get("posLat"));
                 innerJSON.put("poslng",resultInner.get("poslng"));
 
+                JSONArray ja = new JSONArray();
+                List<Map<String,Object>> k = tourService.getTourPic((String)resultInner.get("tourCode"));
+
+                for(Map<String,Object> i:k){
+                    JSONObject jo1 = new JSONObject();
+                    jo1.put("picId",Attribute.pic+i.get("picId"));
+                    ja.add(jo1);
+                }
+                innerJSON.put("pic",ja);
+
                 jsonArray.add(innerJSON);
             }
             jsonObject.put("resultList",jsonArray);
@@ -290,6 +305,7 @@ public class TotolController {
                 JSONObject innerJSON = new JSONObject();
                 innerJSON.put("tourName",resultInner.get("tourName"));
                 innerJSON.put("tourCode",resultInner.get("tourCode"));
+                innerJSON.put("dreamListCode",resultInner.get("dreamListCode"));
                 innerJSON.put("userCode",resultInner.get("userCode"));
                 jsonArray.add(innerJSON);
             }
@@ -399,5 +415,61 @@ public class TotolController {
         jsonObject.put("msg",inner);
 
         return jsonObject.toString();
+    }
+
+    @RequestMapping(value = "/Tour/imgUpdate", produces = "application/json; charset=utf-8" ,method = RequestMethod.POST)
+    @ResponseBody
+    public String imgUpdate(@RequestParam(value = "file") MultipartFile file,@RequestParam("tourCode") String tourCode) {
+        JSONObject resultJSON = new JSONObject();
+        if (file.isEmpty()) {
+            resultJSON.put("flag","0");
+            resultJSON.put("msg","图片为空");
+            return resultJSON.toString();
+        }
+        // 文件名由系统上生成
+        String originFileName =  file.getOriginalFilename();
+
+        // 获取文件的后缀名
+        String suffixName = originFileName.substring(originFileName.lastIndexOf("."));
+
+        String picId = "PIC"+PubicMethod.getAcademeCode()+suffixName;
+
+        Map<String,Object> param = new HashMap<>();
+        param.put("picId",picId);
+        param.put("tourCode",tourCode);
+        // 文件上传后的路径
+        String filePath = Attribute.dir_n;
+        File dest = new File(filePath + picId);
+
+        // 检测是否存在目录
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdirs();
+        }
+        try {
+            //将图片存储下来
+            file.transferTo(dest);
+
+            tourService.addTourPic(param);
+
+            resultJSON.put("flag","1");
+            resultJSON.put("msg","上传成功");
+            return resultJSON.toString();
+        } catch (Exception e) {
+            resultJSON.put("flag","0");
+            resultJSON.put("msg","内部错误");
+            return resultJSON.toString();
+        }
+    }
+    @RequestMapping(value = "/Tour/getPic", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @CrossOrigin
+    @ResponseBody
+    private byte[] getPic(HttpServletRequest request) throws Exception {
+        String picId = request.getParameter("picId");
+        String dir = Attribute.dir_n;
+        File file = new File(dir + picId);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        byte[] pic_bytes = new byte[fileInputStream.available()];
+        fileInputStream.read(pic_bytes, 0, fileInputStream.available());
+        return pic_bytes;
     }
 }

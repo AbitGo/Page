@@ -47,4 +47,10 @@ public class TourService {
     public List<Map<String,Object>> statDreamList(){
         return tourMapper.statDreamList();
     }
+    public int addTourPic(Map<String,Object> param){
+        return tourMapper.addTourPic(param);
+    }
+    public List<Map<String,Object>> getTourPic(String tourCode){
+        return tourMapper.getTourPic(tourCode);
+    }
 }

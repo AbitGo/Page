@@ -17,4 +17,7 @@ public interface TourMapper {
     List<Map<String,Object>> getTourComment(String tourCode);
     int addTourComment(Map<String,Object> param);
     List<Map<String,Object>> statDreamList();
+    int addTourPic(Map<String,Object> param);
+    List<Map<String,Object>> getTourPic(String tourCode);
+
 }

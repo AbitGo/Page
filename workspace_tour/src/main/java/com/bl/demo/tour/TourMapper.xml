@@ -21,6 +21,10 @@
         select * from tour_t where tourName like concat ('%',#{name},'%') order by timeAdd
     </select>
 
+    <select id="getTourPic" parameterType="string" resultType="map">
+        select * from pic_t where tourCode = #{tourCode}
+    </select>
+
     <select id="existDreamList" parameterType="map" resultType="long">
         select count(*) from dreamlist_t where tourCode=#{tourCode} and userCode=#{userCode}
     </select>
@@ -36,7 +40,7 @@
 
     <select id="getDreamList" parameterType="string" resultType="map">
         SELECT
-         tour_t.tourName,tour_t.tourCode,dt.userCode
+         tour_t.tourName,tour_t.tourCode,dt.userCode,dt.dreamListCode
         FROM
             dreamlist_t AS dt
         INNER JOIN tour_t ON tour_t.tourCode = dt.tourCode
@@ -75,4 +79,9 @@
             dreamListCode
         LIMIT 5
     </select>
+
+    <insert id="addTourPic" parameterType="map">
+        insert into pic_t (picId, tourCode)
+        values (#{picId},#{tourCode})
+    </insert>
 </mapper>
