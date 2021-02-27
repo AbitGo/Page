@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.department.DepartmentMapper">
+    <insert id="departmentCreate" parameterType="com.pojo.DepartmentCreateInfo">
+        insert into departmentinfo (departmentName_t, departmentCode_t, departmentRoot_t)
+        VALUES (#{departmentName}, #{departmentCode}, #{departmentRoot})
+    </insert>
+    
+    <update id="departmentUpdate" parameterType="com.pojo.DepartmentUpdateInfo">
+        update departmentinfo set departmentName_t = #{departmentName},departmentInfo_t=#{departmentInfo}
+        where departmentCode_t = #{departmentCode}
+    </update>
+
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.user.UserMapper">
+    <insert id="userRegister" parameterType="com.pojo.UserRegisterInfo">
+        insert into userinfo (userName_t, userPassword_t, userLoginName_t, userCode_t, userEmail_t)
+        values (#{userName}, #{userPassword}, #{userLoginName}, #{userCode}, #{userEmail});
+    </insert>
+
+    <!--    <insert id="addUser" parameterType="map">-->
+    <!--        INSERT into user (loginName, loginPwd, userName, userCode,userEmail) values (#{loginName},#{loginPwd},#{userName},#{userCode},#{userEmail})-->
+    <!--    </insert>-->
+
+    <!--    <update id="changePwd" parameterType="map">-->
+    <!--        update user set loginPwd =#{loginPwd} where loginName=#{loginName}-->
+    <!--    </update>-->
+
+    <!--    <update id="addTkn" parameterType="map">-->
+    <!--        update user set token= #{token} where loginName=#{loginName}-->
+    <!--    </update>-->
+
+    <!--    <select id="searchEmail" parameterType="string" resultType="string">-->
+    <!--        select userEmail from user where loginName=#{loginName}-->
+    <!--    </select>-->
+
+    <!--    <select id="getTkn" resultType="string" parameterType="string">-->
+    <!--        select token from user where loginName=#{loginName}-->
+    <!--    </select>-->
+
+    <!--    <select id="login" parameterType="map" resultType="map">-->
+    <!--        select * from user where loginName = #{loginName}-->
+    <!--    </select>-->
+
+</mapper>
