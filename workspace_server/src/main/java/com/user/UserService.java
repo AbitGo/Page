@@ -1,5 +1,6 @@
 package com.user;
 
+import com.pojo.UserLoginInfo;
 import com.pojo.UserRegisterInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,4 +14,8 @@ public class UserService {
     public int userRegister(UserRegisterInfo param){
         return userMapper.userRegister(param);
     }
+    public Map<String,Object> userLogin(UserLoginInfo param){
+        return userMapper.userLogin(param);
+    }
 }
+

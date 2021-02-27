@@ -9,6 +9,15 @@ public class DepartmentCreateInfo {
     private String departmentName;
     private String departmentCode;
     private String departmentRoot;
+    private String personnelCode;
+
+    public String getPersonnelCode() {
+        return personnelCode;
+    }
+
+    public void setPersonnelCode(String personnelCode) {
+        this.personnelCode = personnelCode;
+    }
 
     public String getDepartmentName() {
         return departmentName;

@@ -3,9 +3,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.user.UserMapper">
     <insert id="userRegister" parameterType="com.pojo.UserRegisterInfo">
-        insert into userinfo (userName_t, userPassword_t, userLoginName_t, userCode_t, userEmail_t)
+        insert into user (userName_t, userPassword_t, userLoginName_t, userCode_t, userEmail_t)
         values (#{userName}, #{userPassword}, #{userLoginName}, #{userCode}, #{userEmail});
     </insert>
+
+    <select id="userLogin" parameterType="com.pojo.UserLoginInfo" resultType="map">
+        select userName_t as userName,
+        userPassword_t as userPassword,
+        userLoginName_t as userLoginName,
+         userCode_t as userCode,
+         userEmail_t as userEmail
+         from user where userEmail_t = #{userLoginInfo} or userLoginName_t = #{userLoginInfo}
+    </select>
+
 
     <!--    <insert id="addUser" parameterType="map">-->
     <!--        INSERT into user (loginName, loginPwd, userName, userCode,userEmail) values (#{loginName},#{loginPwd},#{userName},#{userCode},#{userEmail})-->
