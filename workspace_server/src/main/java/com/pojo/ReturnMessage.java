@@ -1,5 +1,6 @@
 package com.pojo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,6 +12,15 @@ public class ReturnMessage {
     private String executeStatus;
     private String executeMsg;
     private Map<String,Object> info;
+    private List<Map<String,Object>> infos;
+
+    public List<Map<String, Object>> getInfos() {
+        return infos;
+    }
+
+    public void setInfos(List<Map<String, Object>> infos) {
+        this.infos = infos;
+    }
 
     public String getExecuteStatus() {
         return executeStatus;

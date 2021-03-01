@@ -16,6 +16,12 @@ spring:
     url: jdbc:mysql://localhost:3306/nblocksys?serverTimezone=UTC&allowMultiQueries=true
     username: root
     password: 123456
+
+#打印
+logging:
+  level:
+    com.user.UserMapper: debug
+#端口
 server:
   port: 7891
 ---

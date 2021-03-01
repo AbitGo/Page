@@ -16,29 +16,20 @@
          from user where userEmail_t = #{userLoginInfo} or userLoginName_t = #{userLoginInfo}
     </select>
 
+    <select id="userSearch" parameterType="com.pojo.UserSearchInfo" resultType="map">
+        select userName_t as userName,
+        userEmail_t as userEmail,
+        userLoginName_t as userLoginName,
+        userCode_t as userCode
+         from user where 1=1
+         <choose>
+             <when test="userInfo!=null">
+                  and ((userEmail_t like "%"#{userInfo}"%") or
+                 (userLoginName_t like "%"#{userInfo}"%"))
+             </when>
+         </choose>
 
-    <!--    <insert id="addUser" parameterType="map">-->
-    <!--        INSERT into user (loginName, loginPwd, userName, userCode,userEmail) values (#{loginName},#{loginPwd},#{userName},#{userCode},#{userEmail})-->
-    <!--    </insert>-->
+    </select>
 
-    <!--    <update id="changePwd" parameterType="map">-->
-    <!--        update user set loginPwd =#{loginPwd} where loginName=#{loginName}-->
-    <!--    </update>-->
-
-    <!--    <update id="addTkn" parameterType="map">-->
-    <!--        update user set token= #{token} where loginName=#{loginName}-->
-    <!--    </update>-->
-
-    <!--    <select id="searchEmail" parameterType="string" resultType="string">-->
-    <!--        select userEmail from user where loginName=#{loginName}-->
-    <!--    </select>-->
-
-    <!--    <select id="getTkn" resultType="string" parameterType="string">-->
-    <!--        select token from user where loginName=#{loginName}-->
-    <!--    </select>-->
-
-    <!--    <select id="login" parameterType="map" resultType="map">-->
-    <!--        select * from user where loginName = #{loginName}-->
-    <!--    </select>-->
 
 </mapper>

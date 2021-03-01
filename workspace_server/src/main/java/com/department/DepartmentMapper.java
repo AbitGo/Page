@@ -1,9 +1,10 @@
 package com.department;
 
-import com.pojo.DepartmentCreateInfo;
-import com.pojo.DepartmentUpdateInfo;
-import com.pojo.UserRegisterInfo;
+import com.pojo.*;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface DepartmentMapper {
@@ -11,5 +12,10 @@ public interface DepartmentMapper {
     public int departmentCreate(DepartmentCreateInfo param);
     //修改部门信息
     public int departmentUpdate(DepartmentUpdateInfo param);
-
+    //添加部门人员验证
+    public int addPersonAuthorization(PersonAuthonizationInfo param);
+    //删除部门人员之前的权限认证
+    public Map<String,Object> delPersonAuthorization(Map<String,String> param);
+    //删除部门人员
+    public int delPerson(PersonDelInfo param);
 }

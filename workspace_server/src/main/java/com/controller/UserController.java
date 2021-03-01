@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.pojo.ReturnMessage;
 import com.pojo.UserLoginInfo;
 import com.pojo.UserRegisterInfo;
+import com.pojo.UserSearchInfo;
 import com.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,10 +26,10 @@ public class UserController {
 
         //前端传输过来的数据必须经过验证
         UserRegisterInfo userRegisterInfo = JSON.parseObject(paramJson, UserRegisterInfo.class);
-        userRegisterInfo.setUserCode("USER"+System.currentTimeMillis());
+        userRegisterInfo.setUserCode("USER" + System.currentTimeMillis());
         try {
             userService.userRegister(userRegisterInfo);
-        }catch (Exception e){
+        } catch (Exception e) {
             returnMessage.setExecuteStatus("0");
             returnMessage.setExecuteMsg("注册失败.该登录名字已被使用");
             return JSONObject.toJSONString(returnMessage);
@@ -44,21 +46,34 @@ public class UserController {
 
         //前端传输过来的数据必须经过验证
         UserLoginInfo userLoginInfo = JSON.parseObject(paramJson, UserLoginInfo.class);
-        Map<String,Object> result = userService.userLogin(userLoginInfo);
-        if(null==result){
+        Map<String, Object> result = userService.userLogin(userLoginInfo);
+        if (null == result) {
             returnMessage.setExecuteStatus("0");
             returnMessage.setExecuteMsg("用户未注册");
-        }else{
-            if(!userLoginInfo.getUserPassword().equals(result.get("userPassword"))){
+        } else {
+            if (!userLoginInfo.getUserPassword().equals(result.get("userPassword"))) {
                 returnMessage.setExecuteStatus("0");
                 returnMessage.setExecuteMsg("密码错误");
-            }
-            else{
+            } else {
                 returnMessage.setExecuteStatus("1");
                 returnMessage.setExecuteMsg("登录成功");
                 returnMessage.setInfo(result);
             }
         }
+        return JSONObject.toJSONString(returnMessage);
+    }
+
+
+    @RequestMapping(value = "/user/userSearch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String userSearch(@RequestBody String paramJson) throws Exception {
+        ReturnMessage returnMessage = new ReturnMessage();
+        UserSearchInfo userSearchInfo  = JSON.parseObject(paramJson, UserSearchInfo.class);
+        List<Map<String, Object>> result = userService.userSearch(userSearchInfo);
+
+        returnMessage.setExecuteStatus("1");
+        returnMessage.setExecuteMsg("搜索成功");
+        returnMessage.setInfos(result);
         return JSONObject.toJSONString(returnMessage);
     }
 }

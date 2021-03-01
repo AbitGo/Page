@@ -14,4 +14,19 @@
         where departmentCode_t = #{departmentCode};
     </update>
 
+    <insert id="addPersonAuthorization" parameterType="com.pojo.PersonAuthonizationInfo">
+        insert into personnel(userCode_t, departmentCode_t, userRole_t, personnelCode_t)
+        values (#{userCode},#{departmentCode},#{userRole},#{personnelCode});
+    </insert>
+
+    <select id="delPersonAuthorization" parameterType="map" resultType="map">
+        select userCode_t as userCode,userRole_t as userRole from personnel
+        where userCode_t=#{userCode} and departmentCode_t=#{departmentCode};
+    </select>
+
+    <delete id="delPerson" parameterType="com.pojo.PersonDelInfo">
+        delete from personnel where userCode_t = #{userCodeDel}
+    </delete>
+
+
 </mapper>

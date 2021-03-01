@@ -1,16 +1,18 @@
-package com.department;
+package com.device;
 
-import com.pojo.*;
+import com.pojo.DepartmentCreateInfo;
+import com.pojo.DepartmentUpdateInfo;
+import com.pojo.PersonAuthonizationInfo;
+import com.pojo.PersonDelInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
-public class DepartmentService {
+public class DeviceService {
     @Autowired
-    DepartmentMapper departmentMapper;
+    DeviceMapper departmentMapper;
     public int departmentCreate(DepartmentCreateInfo param){
         return departmentMapper.departmentCreate(param);
     }

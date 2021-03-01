@@ -2,9 +2,11 @@ package com.user;
 
 import com.pojo.UserLoginInfo;
 import com.pojo.UserRegisterInfo;
+import com.pojo.UserSearchInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -16,6 +18,9 @@ public class UserService {
     }
     public Map<String,Object> userLogin(UserLoginInfo param){
         return userMapper.userLogin(param);
+    }
+    public List<Map<String,Object>> userSearch(UserSearchInfo userInfo){
+        return userMapper.userSearch(userInfo);
     }
 }
 
