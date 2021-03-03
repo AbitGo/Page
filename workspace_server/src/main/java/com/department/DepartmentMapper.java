@@ -15,7 +15,7 @@ public interface DepartmentMapper {
     //添加部门人员验证
     public int addPersonAuthorization(PersonAuthonizationInfo param);
     //删除部门人员之前的权限认证
-    public Map<String,Object> delPersonAuthorization(Map<String,String> param);
+    public Map<String,Object> personAuthorization(Map<String,String> param);
     //删除部门人员
     public int delPerson(PersonDelInfo param);
 }

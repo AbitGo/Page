@@ -19,7 +19,7 @@
         values (#{userCode},#{departmentCode},#{userRole},#{personnelCode});
     </insert>
 
-    <select id="delPersonAuthorization" parameterType="map" resultType="map">
+    <select id="personAuthorization" parameterType="map" resultType="map">
         select userCode_t as userCode,userRole_t as userRole from personnel
         where userCode_t=#{userCode} and departmentCode_t=#{departmentCode};
     </select>

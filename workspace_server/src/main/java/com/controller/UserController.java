@@ -9,6 +9,7 @@ import com.pojo.UserSearchInfo;
 import com.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Transactional
     @RequestMapping(value = "/user/userRegister", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String userRegister(@RequestBody String paramJson) throws Exception {
@@ -39,6 +41,7 @@ public class UserController {
         return JSONObject.toJSONString(returnMessage);
     }
 
+    @Transactional
     @RequestMapping(value = "/user/userLogin", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String userLogin(@RequestBody String paramJson) throws Exception {
@@ -64,6 +67,7 @@ public class UserController {
     }
 
 
+    @Transactional
     @RequestMapping(value = "/user/userSearch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String userSearch(@RequestBody String paramJson) throws Exception {

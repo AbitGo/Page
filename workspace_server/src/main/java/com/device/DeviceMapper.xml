@@ -3,4 +3,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.device.DeviceMapper">
 
+    <insert id="addDevice" parameterType="com.pojo.DeviceAddInfo">
+        insert into device( departmentCode_t, deviceName_t, deviceIMEI_t)
+        values (#{departmentCode},#{deviceName},#{deviceIMEI})
+    </insert>
+
+    <delete id="deleteDevice" parameterType="com.pojo.DeviceDeleteOrSearchInfo">
+        delete from device where deviceIMEI_t = #{deviceIMEI}
+    </delete>
+    
+    <select id="searchDevice" parameterType="com.pojo.DeviceDeleteOrSearchInfo" resultType="map">
+        select
+        deviceIMEI_t as deviceIMEI,
+        deviceInfo_t as deviceInfo,
+        deviceName_t as deviceName,
+        deviceDefaultPWD_t as deviceDefaultPWD,
+        departmentCode_t as departmentCode
+        from device
+        where 1=1
+        <choose>
+            <when test="deviceName!=null">
+                and deviceName_t like "%"#{deviceName}"%"
+            </when>
+
+            <when test="deviceIMEI!=null">
+                and deviceIMEI_t like "%"#{deviceIMEI}"%"
+            </when>
+            <when test="departmentCode!=null">
+                and departmentCode_t =#{departmentCode}
+            </when>
+        </choose>
+
+    </select>
+
+
 </mapper>

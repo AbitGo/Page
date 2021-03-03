@@ -7,6 +7,7 @@ import com.pojo.*;
 import com.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -19,6 +20,7 @@ public class DepartmentController {
     @Autowired
     DepartmentService departmentService;
 
+    @Transactional
     @RequestMapping(value = "/department/departmentCreate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String userRegister(@RequestBody String paramJson) {
@@ -48,6 +50,7 @@ public class DepartmentController {
     /*
     *修改部门数据
      */
+    @Transactional
     @RequestMapping(value = "/department/departmentUpdate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String departmentUpdateName(@RequestBody String paramJson) {
@@ -69,6 +72,7 @@ public class DepartmentController {
     /*
      *添加部门人员
      */
+    @Transactional
     @RequestMapping(value = "/department/personAuthorization", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String personAuthorization(@RequestBody String paramJson) {
@@ -92,6 +96,7 @@ public class DepartmentController {
     /*
      *删除部门人员
      */
+    @Transactional
     @RequestMapping(value = "/department/personDel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String personDel(@RequestBody String paramJson) {
@@ -101,9 +106,9 @@ public class DepartmentController {
         //获取需要删除者和被删除者之间的等级关系
         temp.put("departmentCode",personAuthonizationInfo.getDepartmentCode());
         temp.put("userCode",personAuthonizationInfo.getUserCodeSelf());
-        Map<String,Object> resultSelf = departmentService.delPersonAuthorization(temp);
+        Map<String,Object> resultSelf = departmentService.personAuthorization(temp);
         temp.put("userCode",personAuthonizationInfo.getUserCodeDel());
-        Map<String,Object> resultDel = departmentService.delPersonAuthorization(temp);
+        Map<String,Object> resultDel = departmentService.personAuthorization(temp);
 
         if(resultDel==null || resultSelf ==null){
             returnMessage.setExecuteStatus("0");
@@ -125,4 +130,36 @@ public class DepartmentController {
         }
     }
 
+    @RequestMapping(value = "/department/searchDepartment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String searchDepartment(@RequestBody String paramJson) {
+        ReturnMessage returnMessage = new ReturnMessage();
+        PersonDelInfo personAuthonizationInfo = JSON.parseObject(paramJson, PersonDelInfo.class);
+        Map<String,String> temp = new HashMap<>();
+        //获取需要删除者和被删除者之间的等级关系
+        temp.put("departmentCode",personAuthonizationInfo.getDepartmentCode());
+        temp.put("userCode",personAuthonizationInfo.getUserCodeSelf());
+        Map<String,Object> resultSelf = departmentService.personAuthorization(temp);
+        temp.put("userCode",personAuthonizationInfo.getUserCodeDel());
+        Map<String,Object> resultDel = departmentService.personAuthorization(temp);
+
+        if(resultDel==null || resultSelf ==null){
+            returnMessage.setExecuteStatus("0");
+            returnMessage.setExecuteMsg("删除部门人员失败.此人已经不在部门内部");
+            return JSONObject.toJSONString(returnMessage);
+        }else{
+            if((int)resultDel.get("userRole")==1){
+                returnMessage.setExecuteStatus("0");
+                returnMessage.setExecuteMsg("删除部门人员失败.此人是部门创建者");
+            }else if((int)resultDel.get("userRole")<(int)resultSelf.get("userRole")){
+                returnMessage.setExecuteStatus("0");
+                returnMessage.setExecuteMsg("删除部门人员失败.权限不足");
+            }else{
+                departmentService.delPerson(personAuthonizationInfo);
+                returnMessage.setExecuteStatus("1");
+                returnMessage.setExecuteMsg("删除部门人员成功");
+            }
+            return JSONObject.toJSONString(returnMessage);
+        }
+    }
 }

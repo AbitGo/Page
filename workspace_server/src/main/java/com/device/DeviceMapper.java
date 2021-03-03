@@ -1,16 +1,18 @@
 package com.device;
 
-import com.pojo.DepartmentCreateInfo;
-import com.pojo.DepartmentUpdateInfo;
-import com.pojo.PersonAuthonizationInfo;
-import com.pojo.PersonDelInfo;
+import com.pojo.*;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
 public interface DeviceMapper {
     //添加设备
-    public int addDevice();
+    public int addDevice(DeviceAddInfo param);
+    //删除设备
+    public int deleteDevice(DeviceDeleteOrSearchInfo param);
 
+    //查找设备
+    public List<Map<String,Object>> searchDevice(DeviceDeleteOrSearchInfo pram);
 }

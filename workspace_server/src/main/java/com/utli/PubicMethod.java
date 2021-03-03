@@ -1,8 +1,30 @@
 package com.utli;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class PubicMethod {
+	public static Map<String,Object> countPage(int index,int limit,Long count){
+		//不满足一页数
+		Long page=0L;
+		if(count!=0)
+		{
+			page = count/limit;
+			if(count%limit!=0) {
+				page++;
+			}
+		}else{
+			page = 0L;
+		}
+
+		Map<String,Object> result = new HashMap<>();
+		result.put("count",count);
+		result.put("page",page);
+		result.put("index",index);
+		result.put("limit",limit);
+		return result;
+	}
 	public static String getAcademeCode() {
 		Random random = new Random();
 		String AcademeCode = "";

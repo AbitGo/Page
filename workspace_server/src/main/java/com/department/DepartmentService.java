@@ -21,8 +21,8 @@ public class DepartmentService {
     public int addPersonAuthorization(PersonAuthonizationInfo param){
         return departmentMapper.addPersonAuthorization(param);
     }
-    public Map<String,Object> delPersonAuthorization(Map<String,String> param){
-        return departmentMapper.delPersonAuthorization(param);
+    public Map<String,Object> personAuthorization(Map<String,String> param){
+        return departmentMapper.personAuthorization(param);
     }
     public int delPerson(PersonDelInfo param){
         return departmentMapper.delPerson(param);
