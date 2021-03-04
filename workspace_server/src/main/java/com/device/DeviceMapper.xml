@@ -11,7 +11,7 @@
     <delete id="deleteDevice" parameterType="com.pojo.DeviceDeleteOrSearchInfo">
         delete from device where deviceIMEI_t = #{deviceIMEI}
     </delete>
-    
+
     <select id="searchDevice" parameterType="com.pojo.DeviceDeleteOrSearchInfo" resultType="map">
         select
         deviceIMEI_t as deviceIMEI,
@@ -36,5 +36,37 @@
 
     </select>
 
+    <select id="searchTaskByProposeCode" parameterType="com.pojo.TaskAddAndSearchInfo" resultType="map">
+        select * from task where 1=1
+        <if test="proposerCode!=null">
+            and proposerCode_t = #{proposerCode}
+        </if>
+        <if test="deviceIMEI!=null">
+            and deviceIMEI_t = #{deviceIMEI}
+        </if>
+        <if test="taskTime!=null">
+            and (#{taskTime} -taskTime_t) &lt; 300
+        </if>
+        <if test="taskStatus!=null">
+            and taskStatus_t = #{taskStatus}
+        </if>
+    </select>
+
+    <insert id="addTask" parameterType="com.pojo.TaskAddAndSearchInfo">
+        INSERT INTO task (
+            taskCode_t,
+            proposerCode_t,
+            deviceIMEI_t,
+            taskTime_t,
+            taskStatus_t
+        ) values (#{taskCode},
+            #{proposerCode},
+            #{deviceIMEI},
+            UNIX_TIMESTAMP(NOW()),
+            0)
+    </insert>
+    <!--        <selectKey resultType="long" order="AFTER" keyProperty="id">-->
+    <!--        SELECT LAST_INSERT_ID() AS id-->
+    <!--    </selectKey>-->
 
 </mapper>

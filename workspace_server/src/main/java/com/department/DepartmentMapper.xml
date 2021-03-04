@@ -28,5 +28,27 @@
         delete from personnel where userCode_t = #{userCodeDel}
     </delete>
 
+    <select id="searchDepartment" parameterType="com.pojo.DepartmentSearch" resultType="map">
+        select departmentCode_t as department,
+        departmentName_t as departmentName,
+        departmentInfo_t as departmentInfo,
+        departmentRoot_t as departmentRoot
+         from department where 1=1
+        <if test="departmentCode!=null">
+            and departmentCode_t like "%"#{departmentCode}"%"
+        </if>
+        <if test="departmentName!=null">
+            and departmentName_t like "%"#{departmentName}"%"
+        </if>
+<!--        <choose>-->
+<!--            <when test="departmentCode!=null">-->
+<!--                and departmentCode_t like "%"#{departmentCode}"%"-->
+<!--            </when>-->
+<!--            <when test="departmentName!=null">-->
+<!--                and departmentName_t like "%"#{departmentName}"%"-->
+<!--            </when>-->
+<!--        </choose>-->
+    </select>
+
 
 </mapper>

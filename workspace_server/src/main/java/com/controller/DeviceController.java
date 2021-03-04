@@ -1,6 +1,5 @@
 package com.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.department.DepartmentService;
 import com.device.DeviceService;
@@ -9,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.pojo.DeviceAddInfo;
 import com.pojo.DeviceDeleteOrSearchInfo;
 import com.pojo.ReturnMessage;
+import com.pojo.TaskAddAndSearchInfo;
 import com.utli.PubicMethod;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -68,13 +68,12 @@ public class DeviceController {
         return JSONObject.toJSONString(returnMessage);
     }
 
+    @ApiOperation(value = "删除设备",notes = "使用必选参数删除设备")
     @Transactional
     @RequestMapping(value = "/device/deleteDevice", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public String deleteDevice(@RequestBody String paramJson) throws Exception {
+    public String deleteDevice(@RequestBody @ApiParam(name = "查询设备",value = "传入参数",required = true) DeviceDeleteOrSearchInfo deviceDeleteInfo) throws Exception {
         ReturnMessage returnMessage = new ReturnMessage();
-        //前端传输过来的数据必须经过验证
-        DeviceDeleteOrSearchInfo deviceDeleteInfo = JSON.parseObject(paramJson, DeviceDeleteOrSearchInfo.class);
         //首选需要判定当前人员等级
         Map<String, String> temp = new HashMap<>();
         temp.put("departmentCode", deviceDeleteInfo.getDepartmentCode());
@@ -115,5 +114,28 @@ public class DeviceController {
         returnMessage.setInfos(results);
         returnMessage.setInfo(PubicMethod.countPage(index,limit,count));
         return JSONObject.toJSONString(returnMessage);
+    }
+
+    @ApiOperation(value = "添加任务",notes = "使用必选参数添加任务")
+    @RequestMapping(value = "/device/AddDeviceTask", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String AddDeviceTask(@RequestBody @ApiParam(name = "添加任务",value = "传入参数",required = true) TaskAddAndSearchInfo taskAddInfo) throws Exception {
+
+        taskAddInfo.setTaskCode("TASK"+System.currentTimeMillis());
+        ReturnMessage returnMessage = new ReturnMessage();
+        //代码复用.锁具状态为0
+        taskAddInfo.setTaskStatus(0);
+        taskAddInfo.setTaskTime(System.currentTimeMillis()/1000);
+        List<Map<String,Object>> results = deviceService.searchTaskByProposeCode(taskAddInfo);
+        if(results.size() !=0 ){
+            returnMessage.setExecuteStatus("0");
+            returnMessage.setExecuteMsg("请勿重复提交");
+            return JSONObject.toJSONString(returnMessage);
+        }else {
+            int result = deviceService.addTask(taskAddInfo);
+            returnMessage.setExecuteStatus("1");
+            returnMessage.setExecuteMsg("任务申请成功");
+            return JSONObject.toJSONString(returnMessage);
+        }
     }
 }

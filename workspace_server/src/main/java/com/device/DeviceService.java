@@ -21,4 +21,10 @@ public class DeviceService {
     public List<Map<String,Object>> searchDevice(DeviceDeleteOrSearchInfo param,int page,int limit){
         return departmentMapper.searchDevice(param);
     }
+    public int addTask(TaskAddAndSearchInfo taskAddInfo){
+        return departmentMapper.addTask(taskAddInfo);
+    }
+    public List<Map<String,Object>> searchTaskByProposeCode(TaskAddAndSearchInfo param){
+        return departmentMapper.searchTaskByProposeCode(param);
+    }
 }

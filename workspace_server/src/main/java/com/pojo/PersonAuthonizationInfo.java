@@ -1,14 +1,22 @@
 package com.pojo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @author 韦海涛
  * @version 1.0
  * @date 2021/2/28 6:00
  */
+@ApiModel("添加部门人员")
 public class PersonAuthonizationInfo {
+    @ApiModelProperty("人员唯一ID-必选")
     private String userCode;
+    @ApiModelProperty("人员唯一ID-必选")
     private String departmentCode;
+    @ApiModelProperty("人员角色D-必选")
     private int userRole;
+    @ApiModelProperty("系统生成-不选")
     private String personnelCode;
 
     public String getUserCode() {

@@ -18,4 +18,8 @@ public interface DepartmentMapper {
     public Map<String,Object> personAuthorization(Map<String,String> param);
     //删除部门人员
     public int delPerson(PersonDelInfo param);
+    //查找部门人员
+    public List<Map<String,Object>> searchDepartment(DepartmentSearch param);
+
+
 }

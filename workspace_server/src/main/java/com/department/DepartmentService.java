@@ -27,4 +27,8 @@ public class DepartmentService {
     public int delPerson(PersonDelInfo param){
         return departmentMapper.delPerson(param);
     }
+
+    public List<Map<String,Object>> searchDepartment(DepartmentSearch param,int index,int limit){
+        return departmentMapper.searchDepartment(param);
+    }
 }

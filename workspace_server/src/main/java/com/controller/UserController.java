@@ -7,6 +7,8 @@ import com.pojo.UserLoginInfo;
 import com.pojo.UserRegisterInfo;
 import com.pojo.UserSearchInfo;
 import com.user.UserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +22,14 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @ApiOperation(value = "用户注册",notes = "用户使用必要参数进行注册")
     @Transactional
     @RequestMapping(value = "/user/userRegister", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public String userRegister(@RequestBody String paramJson) throws Exception {
+    public String userRegister(@RequestBody @ApiParam(name = "搜寻部门",value = "传入参数",required = true)UserRegisterInfo userRegisterInfo) throws Exception {
         ReturnMessage returnMessage = new ReturnMessage();
 
         //前端传输过来的数据必须经过验证
-        UserRegisterInfo userRegisterInfo = JSON.parseObject(paramJson, UserRegisterInfo.class);
         userRegisterInfo.setUserCode("USER" + System.currentTimeMillis());
         try {
             userService.userRegister(userRegisterInfo);
@@ -41,14 +43,12 @@ public class UserController {
         return JSONObject.toJSONString(returnMessage);
     }
 
+    @ApiOperation(value = "用户登录",notes = "用户登录必要参数进行注册")
     @Transactional
     @RequestMapping(value = "/user/userLogin", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public String userLogin(@RequestBody String paramJson) throws Exception {
+    public String userLogin(@RequestBody @ApiParam(name = "用户登录",value = "传入参数",required = true)UserLoginInfo userLoginInfo) throws Exception {
         ReturnMessage returnMessage = new ReturnMessage();
-
-        //前端传输过来的数据必须经过验证
-        UserLoginInfo userLoginInfo = JSON.parseObject(paramJson, UserLoginInfo.class);
         Map<String, Object> result = userService.userLogin(userLoginInfo);
         if (null == result) {
             returnMessage.setExecuteStatus("0");
@@ -67,14 +67,13 @@ public class UserController {
     }
 
 
+    @ApiOperation(value = "用户查找",notes = "使用可选参数搜索用户")
     @Transactional
     @RequestMapping(value = "/user/userSearch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public String userSearch(@RequestBody String paramJson) throws Exception {
+    public String userSearch(@RequestBody @ApiParam(name = "查询设备",value = "传入参数",required = true)  UserSearchInfo userSearchInfo) throws Exception {
         ReturnMessage returnMessage = new ReturnMessage();
-        UserSearchInfo userSearchInfo  = JSON.parseObject(paramJson, UserSearchInfo.class);
         List<Map<String, Object>> result = userService.userSearch(userSearchInfo);
-
         returnMessage.setExecuteStatus("1");
         returnMessage.setExecuteMsg("搜索成功");
         returnMessage.setInfos(result);
