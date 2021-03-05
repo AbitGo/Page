@@ -10,6 +10,7 @@ import com.pojo.DeviceDeleteOrSearchInfo;
 import com.pojo.ReturnMessage;
 import com.pojo.TaskAddAndSearchInfo;
 import com.utli.PubicMethod;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2021/3/1 19:02
  */
+@Api(tags = "设备数据接口")
 @RestController
 public class DeviceController {
     @Autowired
