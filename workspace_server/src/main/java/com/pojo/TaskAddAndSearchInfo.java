@@ -10,6 +10,10 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel("添加任务所需要的参数")
 public class TaskAddAndSearchInfo {
+    @ApiModelProperty("页码")
+    private int index;
+    @ApiModelProperty("页数")
+    private int limit;
     @ApiModelProperty("任务唯一id")
     private String taskCode;
     @ApiModelProperty("申请人唯一id")
@@ -20,6 +24,23 @@ public class TaskAddAndSearchInfo {
     private long taskTime;
     @ApiModelProperty("任务查询状态")
     private int taskStatus;
+
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
 
     public int getTaskStatus() {
         return taskStatus;
