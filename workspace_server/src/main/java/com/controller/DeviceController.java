@@ -138,4 +138,17 @@ public class DeviceController {
             return JSONObject.toJSONString(returnMessage);
         }
     }
+
+    @ApiOperation(value = "用户查找任务",notes = "使用必选参数添加任务")
+    @RequestMapping(value = "/device/SearchDeviceTaskByUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String SearchDeviceTaskByUser(@RequestBody @ApiParam(name = "用户查找任务",value = "传入参数",required = true) TaskAddAndSearchInfo taskAddInfo) throws Exception {
+        ReturnMessage returnMessage = new ReturnMessage();
+
+        List<Map<String,Object>> results = deviceService.searchTaskByProposeCode(taskAddInfo);
+
+        returnMessage.setExecuteStatus("1");
+        returnMessage.setExecuteMsg("任务查找成功");
+        return JSONObject.toJSONString(returnMessage);
+    }
 }
