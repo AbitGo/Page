@@ -128,7 +128,7 @@ public class DeviceController {
         //代码复用.锁具状态为0
         taskAddInfo.setTaskStatus(0);
         taskAddInfo.setTaskTime(System.currentTimeMillis()/1000);
-        List<Map<String,Object>> results = deviceService.searchTaskByProposeCode(taskAddInfo);
+        List<Map<String,Object>> results = deviceService.searchTaskByProposeCode(taskAddInfo,1,1);
         if(results.size() !=0 ){
             returnMessage.setExecuteStatus("0");
             returnMessage.setExecuteMsg("请勿重复提交");
@@ -145,12 +145,16 @@ public class DeviceController {
     @RequestMapping(value = "/device/SearchDeviceTaskByUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String SearchDeviceTaskByUser(@RequestBody @ApiParam(name = "用户查找任务",value = "传入参数",required = true) TaskAddAndSearchInfo taskAddInfo) throws Exception {
-        ReturnMessage returnMessage = new ReturnMessage();
 
-        List<Map<String,Object>> results = deviceService.searchTaskByProposeCode(taskAddInfo);
 
-        returnMessage.setExecuteStatus("1");
-        returnMessage.setExecuteMsg("任务查找成功");
+        int index = taskAddInfo.getIndex();
+        int limit = taskAddInfo.getLimit();
+        List<Map<String,Object>> results = deviceService.searchTaskByProposeCode(taskAddInfo,index,limit);
+        //设置返回的总记录数
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(results);
+        Long count = pageInfo.getTotal();
+        Map<String,Object> result = PubicMethod.countPage(index,limit,count);
+        ReturnMessage returnMessage = new ReturnMessage("1","任务查找成功",result,results);
         return JSONObject.toJSONString(returnMessage);
     }
 }

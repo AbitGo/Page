@@ -14,6 +14,33 @@ public class ReturnMessage {
     private Map<String,Object> info;
     private List<Map<String,Object>> infos;
 
+    public ReturnMessage() {
+    }
+
+    public ReturnMessage(String executeStatus, String executeMsg, List<Map<String, Object>> infos) {
+        this.executeStatus = executeStatus;
+        this.executeMsg = executeMsg;
+        this.infos = infos;
+    }
+
+    public ReturnMessage(String executeStatus, String executeMsg, Map<String, Object> info) {
+        this.executeStatus = executeStatus;
+        this.executeMsg = executeMsg;
+        this.info = info;
+    }
+
+    public ReturnMessage(String executeStatus, String executeMsg) {
+        this.executeStatus = executeStatus;
+        this.executeMsg = executeMsg;
+    }
+
+    public ReturnMessage(String executeStatus, String executeMsg, Map<String, Object> info, List<Map<String, Object>> infos) {
+        this.executeStatus = executeStatus;
+        this.executeMsg = executeMsg;
+        this.info = info;
+        this.infos = infos;
+    }
+
     public List<Map<String, Object>> getInfos() {
         return infos;
     }

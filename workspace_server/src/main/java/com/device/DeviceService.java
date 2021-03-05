@@ -24,7 +24,7 @@ public class DeviceService {
     public int addTask(TaskAddAndSearchInfo taskAddInfo){
         return departmentMapper.addTask(taskAddInfo);
     }
-    public List<Map<String,Object>> searchTaskByProposeCode(TaskAddAndSearchInfo param){
+    public List<Map<String,Object>> searchTaskByProposeCode(TaskAddAndSearchInfo param,int page,int limit){
         return departmentMapper.searchTaskByProposeCode(param);
     }
 }

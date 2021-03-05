@@ -72,11 +72,9 @@ public class UserController {
     @RequestMapping(value = "/user/userSearch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String userSearch(@RequestBody @ApiParam(name = "查询设备",value = "传入参数",required = true)  UserSearchInfo userSearchInfo) throws Exception {
-        ReturnMessage returnMessage = new ReturnMessage();
+
         List<Map<String, Object>> result = userService.userSearch(userSearchInfo);
-        returnMessage.setExecuteStatus("1");
-        returnMessage.setExecuteMsg("搜索成功");
-        returnMessage.setInfos(result);
+        ReturnMessage returnMessage = new ReturnMessage("1","搜索成功",result);
         return JSONObject.toJSONString(returnMessage);
     }
 }
