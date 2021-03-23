@@ -2,6 +2,7 @@ package com.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mail.SendMailService;
 import com.pojo.ReturnMessage;
 import com.pojo.UserLoginInfo;
 import com.pojo.UserRegisterInfo;
@@ -21,6 +22,8 @@ import java.util.Map;
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    SendMailService sendMailService;
 
     @ApiOperation(value = "用户注册",notes = "用户使用必要参数进行注册")
     @Transactional
@@ -72,9 +75,15 @@ public class UserController {
     @RequestMapping(value = "/user/userSearch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String userSearch(@RequestBody @ApiParam(name = "查询设备",value = "传入参数",required = true)  UserSearchInfo userSearchInfo) throws Exception {
-
         List<Map<String, Object>> result = userService.userSearch(userSearchInfo);
         ReturnMessage returnMessage = new ReturnMessage("1","搜索成功",result);
         return JSONObject.toJSONString(returnMessage);
+    }
+
+    @RequestMapping(value = "/a/testEmail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    private String sendEmailaaa(@RequestBody String a) throws Exception {
+        sendMailService.sendHtmlMail("找回验证码","198321");
+        return "ok";
     }
 }
