@@ -4,7 +4,7 @@ public class EmailInfo {
     private String verificationCode;
     private String subject;
 
-    public EmailInfo(String verificationCode, String subject) {
+    public EmailInfo(String subject,String verificationCode) {
         this.verificationCode = verificationCode;
         this.subject = subject;
     }

@@ -2,27 +2,27 @@ package com.mail;
 
 import com.AllApplication;
 import com.pojo.EmailInfo;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.StringWriter;
 
 @Component
-public class SendMailService {
+public class SendMailService{
     @Autowired
-    JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
 
-
-    private String sendEmail="15599036120@163.com";
-    public void sendEmail(String to, String subject, String content)
-    {
+    @Value("${spring.mail.username}")
+    private String sendEmail;
+    public void sendEmail(String to, String subject, String content) throws MessagingException {
         try{
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
@@ -36,7 +36,7 @@ public class SendMailService {
         }
     }
 
-    public void sendHtmlMail(String subject,String verificationCode){
+    public void sendHtmlMail(String email,String subject,String verificationCode){
 
         try{
             Configuration configuration = new Configuration(Configuration.VERSION_2_3_0);
@@ -46,7 +46,7 @@ public class SendMailService {
             StringWriter mail = new StringWriter();
             EmailInfo emailInfo = new EmailInfo(subject,verificationCode);
             template.process(emailInfo,mail);
-            sendEmail("1419561484@qq.com","找回密码",
+            sendEmail(email,"找回密码",
                     mail.toString());
         }catch (Exception e){
             e.printStackTrace();

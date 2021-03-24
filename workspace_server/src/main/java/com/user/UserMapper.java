@@ -3,6 +3,7 @@ package com.user;
 import com.pojo.UserLoginInfo;
 import com.pojo.UserRegisterInfo;
 import com.pojo.UserSearchInfo;
+import com.pojo.UserUpdatePwdInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,4 +17,12 @@ public interface UserMapper {
     public Map<String,Object> userLogin(UserLoginInfo param);
     //用户搜索
     public List<Map<String,Object>> userSearch(UserSearchInfo userInfo);
+    //搜索用户邮箱
+    public Map<String,String> searchUserEmail(String userInfo);
+    //添加最新数据
+    public int updateUserVerCode(Map<String,String> param);
+    //获取用户验证码
+    public String getUserVerCode(String mail);
+    //修改用户密码
+    public int updateUserPwd(UserUpdatePwdInfo param);
 }

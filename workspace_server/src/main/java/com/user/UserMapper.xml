@@ -31,5 +31,21 @@
 
     </select>
 
+    <select id="searchUserEmail" resultType="map">
+        select userEmail_t as userEmail from user where userLoginName_t = #{userInfo} or userEmail_t=#{userInfo};
+    </select>
+
+    <insert id="updateUserVerCode" parameterType="map">
+        update user set userVerificationCode_t = #{verification} where userEmail_t=#{userEmail}
+    </insert>
+
+    <select id="getUserVerCode" parameterType="string" resultType="string">
+        select userVerificationCode_t as userVerificationCode from user where userEmail_t=#{userEmail};
+    </select>
+
+    <update id="updateUserPwd" parameterType="com.pojo.UserUpdatePwdInfo">
+        update user set userPassword_t = #{userPassword} where userEmail_t=#{userEmail}
+    </update>
+
 
 </mapper>

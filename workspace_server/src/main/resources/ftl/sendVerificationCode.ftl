@@ -55,7 +55,7 @@
                                         <tr>
                                             <td width="100%" class="fullCenter" valign="middle"
                                                 style="text-align: center; font-family: 'Open Sans', Helvetica, Arial, sans-serif; font-size: 20px; color: rgb(255, 255, 255); line-height: 35px; font-weight: 400;">
-                                                智能锁群系统修改密码验证码
+                                                智能锁群系统验证码
                                             </td>
                                         </tr>
                                         <tr>
@@ -95,7 +95,7 @@
                                         <tr>
                                             <td width="100%" class="fullCenter" valign="middle"
                                                 style="text-align: center; font-family: 'Open Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: rgb(142, 145, 151); line-height: 24px; font-weight: 400;">
-                                                您好！感谢您使用百度服务，您的账号正在进行邮箱验证，本次请求的验证码为：${verificationCode}
+                                                您好！感谢您使用智能锁群系统，您的账号正在进行邮箱验证，本次请求的验证码为：${verificationCode}
                                             </td>
                                         </tr>
                                         </tbody>
@@ -125,7 +125,7 @@
                                         <tr>
                                             <td width="100%" class="fullCenter" valign="middle"
                                                 style="text-align: center; font-family: 'Open Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: rgb(142, 145, 151); line-height: 24px; font-weight: 400;">
-                                                验证码有效期为5分钟，请尽快使用哦。
+                                                验证码有效期为5分钟，请尽快使用
                                             </td>
                                         </tr>
                                         </tbody>

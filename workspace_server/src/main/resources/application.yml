@@ -7,18 +7,10 @@ server:
     uri-encoding: utf-8
     max-threads: 30
 
-#java -jar xxx.jar --spring.profiles.active=product
----
 spring:
-  profiles: local
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/nblocksys?serverTimezone=UTC&allowMultiQueries=true
-    username: root
-    password: 123456
   mail:
     username: 15599036120@163.com
-    password: 320481wht
+    password: RQNNCDEKGAKYYCHT
     host: smtp.163.com
     port: 994
     default-encoding: utf-8
@@ -28,6 +20,29 @@ spring:
           socketFactory:
             class: javax.net.ssl.SSLSocketFactory
         debug: false
+    protocol: smtp
+
+#java -jar xxx.jar --spring.profiles.active=product
+---
+spring:
+  profiles: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/nblocksys?serverTimezone=UTC&allowMultiQueries=true
+    username: root
+    password: 123456
+#  mail:
+#    username: 15695203200@163.com
+#    password: 320481wht
+#    host: smtp.163.com
+#    port: 994
+#    default-encoding: utf-8
+#    properties:
+#      mail:
+#        smtp:
+#          socketFactory:
+#            class: javax.net.ssl.SSLSocketFactory
+#        debug: false
 #打印
 logging:
   level:

@@ -3,6 +3,7 @@ package com.user;
 import com.pojo.UserLoginInfo;
 import com.pojo.UserRegisterInfo;
 import com.pojo.UserSearchInfo;
+import com.pojo.UserUpdatePwdInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,18 @@ public class UserService {
     }
     public List<Map<String,Object>> userSearch(UserSearchInfo userInfo){
         return userMapper.userSearch(userInfo);
+    }
+    public Map<String,String> searchUserEmail(String userInfo){
+        return userMapper.searchUserEmail(userInfo);
+    }
+    public int updateUserVerCode(Map<String,String> param){
+        return userMapper.updateUserVerCode(param);
+    }
+    public String getUserVerCode(String mail){
+        return userMapper.getUserVerCode(mail);
+    }
+    public int updateUserPwd(UserUpdatePwdInfo param){
+        return userMapper.updateUserPwd(param);
     }
 }
 
