@@ -95,7 +95,7 @@
                                         <tr>
                                             <td width="100%" class="fullCenter" valign="middle"
                                                 style="text-align: center; font-family: 'Open Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: rgb(142, 145, 151); line-height: 24px; font-weight: 400;">
-                                                您好！感谢您使用智能锁群系统，您的账号正在进行邮箱验证，本次请求的验证码为：${verificationCode}
+                                                您好！感谢您使用智能锁群系统，您的账号正在进行邮箱验证，验证码有效期为5分钟：
                                             </td>
                                         </tr>
                                         </tbody>
@@ -124,8 +124,9 @@
                                         </tr>
                                         <tr>
                                             <td width="100%" class="fullCenter" valign="middle"
-                                                style="text-align: center; font-family: 'Open Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: rgb(142, 145, 151); line-height: 24px; font-weight: 400;">
-                                                验证码有效期为5分钟，请尽快使用
+                                                style="text-align: center; font-family: 'Open Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: rgb(142, 145, 151); line-height: 24px; font-weight: 400;" id = "myInput">
+
+                                                ${verificationCode}
                                             </td>
                                         </tr>
                                         </tbody>
@@ -159,14 +160,15 @@
                                                            border="0" cellspacing="0" cellpadding="0">
                                                         <tbody>
                                                         <tr>
-<#--                                                            <td height="36" align="center"-->
-<#--                                                                style="border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; padding-left: 20px; padding-right: 20px; font-family: 'Open Sans', Helvetica, Arial, sans-serif; color: rgb(255, 255, 255); font-size: 13px; font-weight: 700; line-height: 1px; background-color: rgb(63, 67, 69);"-->
-<#--                                                                bgcolor="#3f4345">-->
+                                                            <td height="36" align="center"
+                                                                style="border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; padding-left: 20px; padding-right: 20px; font-family: 'Open Sans', Helvetica, Arial, sans-serif; color: rgb(255, 255, 255); font-size: 13px; font-weight: 700; line-height: 1px; background-color: rgb(63, 67, 69);"
+                                                                bgcolor="#3f4345">
 
-<#--                                                                <a style="color: rgb(255, 255, 255); text-decoration: none; width: 100%;"-->
-<#--                                                                   href="wwww.baidu.com">不再提醒</a>-->
+                                                                <a style="color: rgb(255, 255, 255); text-decoration: none; width: 100%;"
+                                                                   href="javascript:myFunction();">
+                                                                    点我复制验证码</a>
 
-<#--                                                            </td>-->
+                                                            </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -258,6 +260,15 @@
     </td>
 </tr>
 </tbody>
+<script>
+    function myFunction() {
+        var copyText = document.getElementById("myInput").innerText;
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        alert("Copied the text: " + copyText.value);
+    }
+</script>
 </body>
 
 </html>

@@ -50,5 +50,18 @@
 <!--        </choose>-->
     </select>
 
+    <select id="getDepartment" parameterType="string" resultType="map">
+         SELECT
+                p.userCode_t AS userCode,
+                p.departmentCode_t AS departmentCode,
+                p.userRole_t AS userRole,
+                d.departmentName_t as departmentName
+            FROM
+                personnel AS p
+            INNER JOIN department AS d on d.departmentCode_t = p.departmentCode_t
+             WHERE
+                p.personnelCode_t = #{userCode};
+    </select>
+
 
 </mapper>

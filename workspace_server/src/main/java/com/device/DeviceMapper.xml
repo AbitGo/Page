@@ -65,8 +65,41 @@
             UNIX_TIMESTAMP(NOW()),
             0)
     </insert>
-    <!--        <selectKey resultType="long" order="AFTER" keyProperty="id">-->
-    <!--        SELECT LAST_INSERT_ID() AS id-->
-    <!--    </selectKey>-->
+
+    <select id="searchTaskByManager" parameterType="com.pojo.TaskSearchByManager" resultType="map">
+        SELECT
+        t.taskStatus_t AS taskStatus,
+        t.taskCode_t AS taskCode,
+        t.deviceIMEI_t AS deviceIMEI,
+        temp.deviceName_t AS deviceName,
+        t.taskTime_t AS taskTime,
+        u.userName_t as userName
+        FROM
+            task AS t
+                JOIN (
+                    SELECT
+                    *
+                    FROM
+                    device
+                    WHERE
+                    departmentCode_t IN (
+                    SELECT
+                    departmentCode_t
+                    FROM
+                    personnel
+                    WHERE
+                    userRole_t   &lt; 3
+                AND userCode_t = #{userCode}
+            )
+        ) AS temp ON temp.deviceIMEI_t = t.deviceIMEI_t
+        AND t.taskStatus_t = #{taskStatus}
+        INNER JOIN  user as u  ON
+        u.userCode_t = #{userCode}
+    </select>
+
+    <update id="auditTaskByTaskCode" parameterType="com.pojo.TaskAuditInfo">
+        update task set taskStatus_t =#{taskStatus} where taskCode_t = #{taskCode}
+    </update>
+
 
 </mapper>

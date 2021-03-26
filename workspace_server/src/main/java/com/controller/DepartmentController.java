@@ -154,4 +154,19 @@ public class DepartmentController {
         returnMessage.setExecuteMsg("查找部门成功");
         return JSONObject.toJSONString(returnMessage);
     }
+
+    @Transactional
+    @ApiOperation(value = "获取部门",notes = "用户获取所在部门")
+    @RequestMapping(value = "/department/getDepartment", method = RequestMethod.GET)
+    @CrossOrigin
+    public String getDepartment(@RequestParam @ApiParam(name = "搜寻部门",value = "传入参数",required = true) String userCode) {
+        ReturnMessage returnMessage = new ReturnMessage();
+        List<Map<String,Object>> results = departmentService.getDepartment(userCode);
+        returnMessage.setInfos(results);
+        returnMessage.setExecuteStatus("1");
+        returnMessage.setExecuteMsg("查找部门成功");
+        return JSONObject.toJSONString(returnMessage);
+    }
+
+
 }

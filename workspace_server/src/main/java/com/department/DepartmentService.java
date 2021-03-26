@@ -31,4 +31,8 @@ public class DepartmentService {
     public List<Map<String,Object>> searchDepartment(DepartmentSearch param,int index,int limit){
         return departmentMapper.searchDepartment(param);
     }
+
+    public List<Map<String,Object>> getDepartment(String userCode){
+        return departmentMapper.getDepartment(userCode);
+    }
 }

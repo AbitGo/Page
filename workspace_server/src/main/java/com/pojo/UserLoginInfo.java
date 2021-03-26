@@ -11,9 +11,9 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "用户登录所需要的参数-必选")
 public class UserLoginInfo {
     //可以是登录名也可以是邮箱
-    @ApiModelProperty(("用户登录信息登录名/邮箱-必选"))
+    @ApiModelProperty("用户登录信息登录名/邮箱-必选")
     private String userLoginInfo;
-    @ApiModelProperty(("用户登录密码-必选"))
+    @ApiModelProperty("用户登录密码-必选")
     private String userPassword;
 
     public String getUserLoginInfo() {

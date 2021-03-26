@@ -27,4 +27,10 @@ public class DeviceService {
     public List<Map<String,Object>> searchTaskByProposeCode(TaskAddAndSearchInfo param,int page,int limit){
         return departmentMapper.searchTaskByProposeCode(param);
     }
+    public List<Map<String,Object>> searchTaskByManager(TaskSearchByManager taskSearchByManager,int page,int limit){
+        return departmentMapper.searchTaskByManager(taskSearchByManager);
+    }
+    public int auditTaskByTaskCode(TaskAuditInfo param){
+        return departmentMapper.auditTaskByTaskCode(param);
+    }
 }

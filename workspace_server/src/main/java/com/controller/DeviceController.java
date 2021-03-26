@@ -5,10 +5,7 @@ import com.department.DepartmentService;
 import com.device.DeviceService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.pojo.DeviceAddInfo;
-import com.pojo.DeviceDeleteOrSearchInfo;
-import com.pojo.ReturnMessage;
-import com.pojo.TaskAddAndSearchInfo;
+import com.pojo.*;
 import com.utli.PubicMethod;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -155,6 +152,31 @@ public class DeviceController {
         Long count = pageInfo.getTotal();
         Map<String,Object> result = PubicMethod.countPage(index,limit,count);
         ReturnMessage returnMessage = new ReturnMessage("1","任务查找成功",result,results);
+        return JSONObject.toJSONString(returnMessage);
+    }
+
+
+    @ApiOperation(value = "管理员查找任务",notes = "使用必选参数添加任务")
+    @RequestMapping(value = "/device/SearchDeviceTaskByManager", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String SearchDeviceTaskByManager(@RequestBody @ApiParam(name = "用户查找任务",value = "传入参数",required = true) TaskSearchByManager taskSearchByManager) throws Exception {
+        int index = taskSearchByManager.getIndex();
+        int limit = taskSearchByManager.getLimit();
+        List<Map<String,Object>> results = deviceService.searchTaskByManager(taskSearchByManager,index,limit);
+        //设置返回的总记录数
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(results);
+        Long count = pageInfo.getTotal();
+        Map<String,Object> result = PubicMethod.countPage(index,limit,count);
+        ReturnMessage returnMessage = new ReturnMessage("1","任务查找成功",result,results);
+        return JSONObject.toJSONString(returnMessage);
+    }
+    @ApiOperation(value = "管理员查找任务",notes = "使用必选参数添加任务")
+    @RequestMapping(value = "/device/auditTask", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String auditTask(@RequestBody @ApiParam(name = "用户查找任务",value = "传入参数",required = true) TaskAuditInfo taskAuditInfo) throws Exception {
+
+        int results = deviceService.auditTaskByTaskCode(taskAuditInfo);
+        ReturnMessage returnMessage = new ReturnMessage("1","任务审核成功");
         return JSONObject.toJSONString(returnMessage);
     }
 }

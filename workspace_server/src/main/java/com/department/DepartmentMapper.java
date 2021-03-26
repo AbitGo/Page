@@ -20,6 +20,6 @@ public interface DepartmentMapper {
     public int delPerson(PersonDelInfo param);
     //查找部门人员
     public List<Map<String,Object>> searchDepartment(DepartmentSearch param);
-
+    public List<Map<String,Object>> getDepartment(String userCode);
 
 }

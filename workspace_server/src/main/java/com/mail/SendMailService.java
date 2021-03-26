@@ -37,7 +37,6 @@ public class SendMailService{
     }
 
     public void sendHtmlMail(String email,String subject,String verificationCode){
-
         try{
             Configuration configuration = new Configuration(Configuration.VERSION_2_3_0);
             ClassLoader loader = AllApplication.class.getClassLoader();

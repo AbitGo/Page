@@ -18,4 +18,6 @@ public interface DeviceMapper {
     public int addTask(TaskAddAndSearchInfo taskAddInfo);
     //根据用户申请事件查找
     public List<Map<String,Object>> searchTaskByProposeCode(TaskAddAndSearchInfo param);
+    public List<Map<String,Object>> searchTaskByManager(TaskSearchByManager taskSearchByManager);
+    public int auditTaskByTaskCode(TaskAuditInfo taskCode);
 }
