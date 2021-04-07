@@ -111,5 +111,26 @@
         from task where taskCode_t = #{taskCode}
     </select>
 
+    <update id="UpdataTaskStatus" parameterType="map">
+        update task set taskStatus_t = #{taskStatus} where taskCode_t = #{taskCode}
+    </update>
+
+    <insert id="addRecord" parameterType="com.pojo.RecordBaseInfo">
+        insert into record(taskCode_t, doTime_t, proposeCode_t, deviceIMEI_t, recordType_t)
+        values (#{taskCode}, #{doTime},#{proposeCode}, #{deviceIMEI}, #{recordType})
+    </insert>
+
+    <select id="searchRecord" parameterType="string" resultType="map">
+        select taskCode_t as taskCode,
+         doTime_t as doTime,
+         proposeCode_t as proposeCode,
+         deviceIMEI_t as deviceIMEI,
+         recordType_t as recordType
+         from record where proposeCode_t = #{proposeCode} order by doTime_t desc
+    </select>
+
+
+
+
 
 </mapper>

@@ -187,20 +187,66 @@ public class DeviceController {
 
         TaskUnlockInfo result_task = deviceService.getTaskbyTaskCode(taskUnlockInfo.getTaskCode());
         ReturnMessage returnMessage = new ReturnMessage();
+
+        Map<String,Object> param = new HashMap<>();
         if(!(null==result_task)){
             //当前任务不为空的时候
-            if(2!=result_task.getTaskStatus()){
+            if(0==result_task.getTaskStatus()){
                 returnMessage.setExecuteStatus("0");
-                returnMessage.setExecuteMsg("该任务未审批或过期");
-            }else if(!result_task.getProposerCode().equals(taskUnlockInfo.getProposerCode())){
-                //当前任务暂未审核
+                returnMessage.setExecuteMsg("该任务未审核");
+            }else if(2==result_task.getTaskStatus()){
                 returnMessage.setExecuteStatus("0");
-                returnMessage.setExecuteMsg("下发失败.该任务非你所拥有");
-            }else {
+                returnMessage.setExecuteMsg("该任务审批未通过");
+            }else if(3==result_task.getTaskStatus()){
+                returnMessage.setExecuteStatus("0");
+                returnMessage.setExecuteMsg("该任务已过时");
+            }else if(4==result_task.getTaskStatus()){
+                returnMessage.setExecuteStatus("0");
+                returnMessage.setExecuteMsg("该任务已执行过");
+            }
+            else if(!result_task.getProposerCode().equals(taskUnlockInfo.getProposerCode())){
+                returnMessage.setExecuteStatus("0");
+                returnMessage.setExecuteMsg("该任务并不属于你");
+            } else{
+
                 returnMessage.setExecuteStatus("1");
                 returnMessage.setExecuteMsg("该任务已下发");
+                param.put("taskCode",result_task.getTaskCode());
+                param.put("taskStatus",4);
+                deviceService.UpdataTaskStatus(param);
+
+                RecordBaseInfo recordBaseInfo = new RecordBaseInfo();
+                recordBaseInfo.setDeviceIMEI(result_task.getDeviceIMEI());
+                recordBaseInfo.setDoTime(System.currentTimeMillis()/1000);
+                recordBaseInfo.setProposeCode(result_task.getProposerCode());
+                recordBaseInfo.setRecordType(1);
+                recordBaseInfo.setTaskCode(result_task.getTaskCode());
+                deviceService.addRecord(recordBaseInfo);
             }
         }
+        return JSONObject.toJSONString(returnMessage);
+    }
+
+    @ApiOperation(value = "查找记录",notes = "使用必选参数查找记录")
+    @RequestMapping(value = "/device/searchRecord", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String searchRecord(@RequestBody @ApiParam(name = "用户查找任务",value = "传入参数",required = true) RecordBaseInfo recordBaseInfo) throws Exception {
+
+        int index = recordBaseInfo.getIndex();
+        int limit = recordBaseInfo.getLimit();
+        String proposeCode = recordBaseInfo.getProposeCode();
+        PageHelper.startPage(index,limit);
+        ReturnMessage returnMessage = new ReturnMessage();
+        List<Map<String,Object>> results = deviceService.searchRecord(proposeCode,index,limit);
+
+        //设置返回的总记录数
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(results);
+        Long count = pageInfo.getTotal();
+
+        returnMessage.setExecuteStatus("1");
+        returnMessage.setExecuteMsg("查找成功");
+        returnMessage.setInfos(results);
+        returnMessage.setInfo(PubicMethod.countPage(index,limit,count));
         return JSONObject.toJSONString(returnMessage);
     }
 }

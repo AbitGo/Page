@@ -22,4 +22,8 @@ public interface DeviceMapper {
     public int auditTaskByTaskCode(TaskAuditInfo taskCode);
 
     public TaskUnlockInfo getTaskbyTaskCode(String taskCode);
+    public int UpdataTaskStatus(Map<String,Object> param);
+    public int addRecord(RecordBaseInfo baseInfo);
+
+    public List<Map<String,Object>> searchRecord(String proposerCode);
 }

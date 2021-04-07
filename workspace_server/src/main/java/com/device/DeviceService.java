@@ -37,4 +37,14 @@ public class DeviceService {
     public TaskUnlockInfo getTaskbyTaskCode(String taskCode){
         return deviceMapper.getTaskbyTaskCode(taskCode);
     }
+    public int UpdataTaskStatus(Map<String,Object> param){
+        return deviceMapper.UpdataTaskStatus(param);
+    }
+
+    public int addRecord(RecordBaseInfo recordBaseInfo){
+        return deviceMapper.addRecord(recordBaseInfo);
+    }
+    public List<Map<String,Object>> searchRecord(String proposerCode,int page,int limit){
+        return deviceMapper.searchRecord(proposerCode);
+    }
 }
