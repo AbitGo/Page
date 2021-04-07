@@ -101,5 +101,15 @@
         update task set taskStatus_t =#{taskStatus} where taskCode_t = #{taskCode}
     </update>
 
+    <select id="getTaskbyTaskCode" parameterType="string" resultType="com.pojo.TaskUnlockInfo">
+        select
+        taskcode_t as taskcode,
+        proposercode_t as proposercode,
+        deviceimei_t as deviceimei,
+        tasktime_t as tasktime,
+        taskstatus_t as taskstatus
+        from task where taskCode_t = #{taskCode}
+    </select>
+
 
 </mapper>

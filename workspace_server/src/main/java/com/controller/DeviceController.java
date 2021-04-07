@@ -179,4 +179,28 @@ public class DeviceController {
         ReturnMessage returnMessage = new ReturnMessage("1","任务审核成功");
         return JSONObject.toJSONString(returnMessage);
     }
+
+    @ApiOperation(value = "用户执行任务",notes = "使用必选参数添加任务")
+    @RequestMapping(value = "/device/UnlockbyTask", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String UnlockbyTask(@RequestBody @ApiParam(name = "用户执行任务",value = "传入参数",required = true) TaskUnlockInfo taskUnlockInfo) throws Exception {
+
+        TaskUnlockInfo result_task = deviceService.getTaskbyTaskCode(taskUnlockInfo.getTaskCode());
+        ReturnMessage returnMessage = new ReturnMessage();
+        if(!(null==result_task)){
+            //当前任务不为空的时候
+            if(2!=result_task.getTaskStatus()){
+                returnMessage.setExecuteStatus("0");
+                returnMessage.setExecuteMsg("该任务未审批或过期");
+            }else if(!result_task.getProposerCode().equals(taskUnlockInfo.getProposerCode())){
+                //当前任务暂未审核
+                returnMessage.setExecuteStatus("0");
+                returnMessage.setExecuteMsg("下发失败.该任务非你所拥有");
+            }else {
+                returnMessage.setExecuteStatus("1");
+                returnMessage.setExecuteMsg("该任务已下发");
+            }
+        }
+        return JSONObject.toJSONString(returnMessage);
+    }
 }

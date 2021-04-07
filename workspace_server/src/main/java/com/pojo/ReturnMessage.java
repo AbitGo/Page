@@ -41,6 +41,7 @@ public class ReturnMessage {
         this.infos = infos;
     }
 
+
     public List<Map<String, Object>> getInfos() {
         return infos;
     }

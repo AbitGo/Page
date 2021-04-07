@@ -10,27 +10,31 @@ import java.util.Map;
 @Service
 public class DeviceService {
     @Autowired
-    DeviceMapper departmentMapper;
+    DeviceMapper deviceMapper;
     public int addDevice(DeviceAddInfo param){
-        return departmentMapper.addDevice(param);
+        return deviceMapper.addDevice(param);
     }
     public int deleteDevice(DeviceDeleteOrSearchInfo param){
-        return departmentMapper.deleteDevice(param);
+        return deviceMapper.deleteDevice(param);
     }
 
     public List<Map<String,Object>> searchDevice(DeviceDeleteOrSearchInfo param,int page,int limit){
-        return departmentMapper.searchDevice(param);
+        return deviceMapper.searchDevice(param);
     }
     public int addTask(TaskAddAndSearchInfo taskAddInfo){
-        return departmentMapper.addTask(taskAddInfo);
+        return deviceMapper.addTask(taskAddInfo);
     }
     public List<Map<String,Object>> searchTaskByProposeCode(TaskAddAndSearchInfo param,int page,int limit){
-        return departmentMapper.searchTaskByProposeCode(param);
+        return deviceMapper.searchTaskByProposeCode(param);
     }
     public List<Map<String,Object>> searchTaskByManager(TaskSearchByManager taskSearchByManager,int page,int limit){
-        return departmentMapper.searchTaskByManager(taskSearchByManager);
+        return deviceMapper.searchTaskByManager(taskSearchByManager);
     }
     public int auditTaskByTaskCode(TaskAuditInfo param){
-        return departmentMapper.auditTaskByTaskCode(param);
+        return deviceMapper.auditTaskByTaskCode(param);
+    }
+
+    public TaskUnlockInfo getTaskbyTaskCode(String taskCode){
+        return deviceMapper.getTaskbyTaskCode(taskCode);
     }
 }
