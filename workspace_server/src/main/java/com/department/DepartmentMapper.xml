@@ -60,7 +60,7 @@
                 personnel AS p
             INNER JOIN department AS d on d.departmentCode_t = p.departmentCode_t
              WHERE
-                p.personnelCode_t = #{userCode};
+                p.userCode_t = #{userCode};
     </select>
 
 
