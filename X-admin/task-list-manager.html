@@ -85,13 +85,14 @@
         $.ajax({
             async: true,
             type: "POST",
-            url: "http://47.102.42.105:7891/device/SearchDeviceTaskByManager",
+            url: "http://47.102.42.105:7891/device/SearchDeviceTask",
             dataType: "json",
             data: JSON.stringify({
-                userCode: proposerCode1,
+                proposerCode: proposerCode1,
                 taskStatus: i,
                 index: 1,
-                limit: 100
+                limit: 100,
+                isUser:0
             }),
             contentType: "application/json",
             success: function (result) {
@@ -108,9 +109,20 @@
                     str += "<th>" + aaaa[index].deviceName + "</th>";
                     str += "<th>" + aaaa[index].userName + "</th>";
                     str += "<th>" + new Date(parseInt(aaaa[index].taskTime) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ') + "</th>";
-                    str += "<th>" + aaaa[index].taskStatus + "</th></tr>";
-                    
+                    if(aaaa[index].taskStatus==0){
+                        param = "未审核";
+                    }else if(aaaa[index].taskStatus==1){
+                        param = "已通过";
+                    }else if(aaaa[index].taskStatus==2){
+                        param = "已拒绝";
+                    }else if(aaaa[index].taskStatus==3){
+                        param = "已过时";
+                    }else if(aaaa[index].taskStatus==4){
+                        param = "已执行";
+                    }
+                    str += "<th>" + param + "</th></tr>";
                 }
+                
                 table_temp.append(str);
             }
         })
@@ -120,13 +132,14 @@
         $.ajax({
             async: true,
             type: "POST",
-            url: "http://47.102.42.105:7891/device/SearchDeviceTaskByManager",
+            url: "http://47.102.42.105:7891/device/SearchDeviceTask",
             dataType: "json",
             data: JSON.stringify({
-                userCode: proposerCode1,
+                proposerCode: proposerCode1,
                 taskStatus: 1,
                 index: 1,
-                limit: 100
+                limit: 100,
+                isUser:1
             }),
             contentType: "application/json",
             success: function (result) {
@@ -143,9 +156,20 @@
                     str += "<th>" + aaaa[index].deviceName + "</th>";
                     str += "<th>" + aaaa[index].userName + "</th>";
                     str += "<th>" + new Date(parseInt(aaaa[index].taskTime) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ') + "</th>";
-                    str += "<th>" + aaaa[index].taskStatus + "</th></tr>";
-                    
+                    if(aaaa[index].taskStatus==0){
+                        param = "未审核";
+                    }else if(aaaa[index].taskStatus==1){
+                        param = "已通过";
+                    }else if(aaaa[index].taskStatus==2){
+                        param = "已拒绝";
+                    }else if(aaaa[index].taskStatus==3){
+                        param = "已过时";
+                    }else if(aaaa[index].taskStatus==4){
+                        param = "已执行";
+                    }
+                    str += "<th>" + param + "</th></tr>";
                 }
+                
                 table_temp.append(str);
             }
         })
