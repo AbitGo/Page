@@ -129,8 +129,35 @@
          from record where proposeCode_t = #{proposeCode} order by doTime_t desc
     </select>
 
-
-
+    <select id="getDevice" parameterType="string" resultType="map">
+        SELECT
+            deviceInfo,
+            departmentCode,
+            deviceName,
+            deviceIMEI,
+            departmentName_t AS departmentName
+        FROM
+            (
+                SELECT
+                    deviceInfo_t AS deviceInfo,
+                    departmentCode_t AS departmentCode,
+                    deviceName_t AS deviceName,
+                    deviceIMEI_t AS deviceIMEI
+                FROM
+                    device
+                WHERE
+                    departmentCode_t IN (
+                        SELECT
+                            departmentCode_t AS dc
+                        FROM
+                            personnel AS p
+                        WHERE
+                            p.userCode_t = #{userCode}
+                    )
+            ) AS temp
+        INNER JOIN department AS d2 ON
+        temp.departmentCode = d2.departmentCode_t
+    </select>
 
 
 </mapper>

@@ -118,6 +118,28 @@ public class DeviceController {
         return JSONObject.toJSONString(returnMessage);
     }
 
+    @ApiOperation(value = "获取设备",notes = "使用可选参数查询设备")
+    @RequestMapping(value = "/device/getDeviceByUserCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String getDeviceByUserCode(@RequestBody @ApiParam(name = "获取设备",value = "传入参数",required = true)DeviceDeleteOrSearchInfo deviceInfo) throws Exception {
+        //首选需要判定当前人员等级
+        int index = deviceInfo.getIndex();
+        int limit = deviceInfo.getLimit();
+        PageHelper.startPage(index,limit);
+        ReturnMessage returnMessage = new ReturnMessage();
+        List<Map<String,Object>> results = deviceService.getDevice(deviceInfo.getUserCode(),index,limit);
+
+        //设置返回的总记录数
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(results);
+        Long count = pageInfo.getTotal();
+
+        returnMessage.setExecuteStatus("1");
+        returnMessage.setExecuteMsg("查找成功");
+        returnMessage.setInfos(results);
+        returnMessage.setInfo(PubicMethod.countPage(index,limit,count));
+        return JSONObject.toJSONString(returnMessage);
+    }
+
     @ApiOperation(value = "添加任务",notes = "使用必选参数添加任务")
     @RequestMapping(value = "/device/AddDeviceTask", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
@@ -173,7 +195,8 @@ public class DeviceController {
         ReturnMessage returnMessage = new ReturnMessage("1","任务查找成功",result,results);
         return JSONObject.toJSONString(returnMessage);
     }
-    @ApiOperation(value = "管理员查找任务",notes = "使用必选参数添加任务")
+
+    @ApiOperation(value = "管理员审核任务",notes = "使用必选参数添加任务")
     @RequestMapping(value = "/device/auditTask", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String auditTask(@RequestBody @ApiParam(name = "用户查找任务",value = "传入参数",required = true) TaskAuditInfo taskAuditInfo) throws Exception {
@@ -266,6 +289,8 @@ public class DeviceController {
         returnMessage.setInfo(PubicMethod.countPage(index,limit,count));
         return JSONObject.toJSONString(returnMessage);
     }
+
+
 
 
     @RequestMapping(value = "/device/Test", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

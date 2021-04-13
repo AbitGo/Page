@@ -19,21 +19,21 @@ public class TCPServer extends Thread {
     public static TCPServer tcpServer;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         tcpServer = this;
         tcpServer.start();
     }
 
-    public String socketSendData(String deviceCode,String deviceData){
+    public String socketSendData(String deviceCode, String deviceData) {
         //不为空时
         subSocketClient temp = DeviceCode2SocketMap.get(deviceCode);
         Long time = DeviceCode2LastestTime.get(deviceCode);
-        if(System.currentTimeMillis()/1000-time>300){
+        if (null == time || System.currentTimeMillis() / 1000 - time > 300) {
             return TimeOut;
         }
-        if(null!=temp){
-            return temp.sendSocketData(deviceData,deviceCode);
-        }else{
+        if (null != temp) {
+            return temp.sendSocketData(deviceData, deviceCode);
+        } else {
             return SendError;
         }
     }
@@ -45,12 +45,12 @@ public class TCPServer extends Thread {
         } catch (IOException e) {
 
         }
-        while(true){
+        while (true) {
             try {
                 System.out.println("wait. .. ...");
                 //使用accept()是阻塞方法
                 Socket socketTemp = serverSocket.accept();
-                new subSocketClient(this.serverSocket,socketTemp).start();
+                new subSocketClient(this.serverSocket, socketTemp).start();
                 //为每个连接都创建一个线程客户端
             } catch (IOException e) {
                 //System.out.println("happening");

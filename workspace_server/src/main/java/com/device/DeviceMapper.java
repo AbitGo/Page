@@ -26,4 +26,5 @@ public interface DeviceMapper {
     public int addRecord(RecordBaseInfo baseInfo);
 
     public List<Map<String,Object>> searchRecord(String proposerCode);
+    public List<Map<String,Object>> getDevice(String userCode);
 }

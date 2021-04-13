@@ -47,4 +47,7 @@ public class DeviceService {
     public List<Map<String,Object>> searchRecord(String proposerCode,int page,int limit){
         return deviceMapper.searchRecord(proposerCode);
     }
+    public List<Map<String,Object>> getDevice(String userCode,int page,int limit ){
+        return deviceMapper.getDevice(userCode);
+    }
 }
