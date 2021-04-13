@@ -10,10 +10,7 @@
         <link rel="stylesheet" href="./css/xadmin.css">
         <script src="./lib/layui/layui.js" charset="utf-8"></script>
         <script type="text/javascript" src="./js/xadmin.js"></script>
-        <!--[if lt IE 9]>
-          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     </head>
     <body>
         <div class="x-nav">
@@ -35,57 +32,17 @@
                             <table class="layui-table layui-form">
                               <thead>
                                 <tr>
-                                  <th>
-                                    <input type="checkbox" name=""  lay-skin="primary">
-                                  </th>
-                                  <th>ID</th>
-                                  <th>登录名</th>
-                                  <th>手机</th>
-                                  <th>邮箱</th>
-                                  <th>角色</th>
-                                  <th>加入时间</th>
-                                  <th>状态</th>
-                                  <th>操作</th>
+                                  <th>序号</th>
+                                  <th>部门名称</th>
+                                  <th>所在等级</th>
+                                  <th>部门创建时间</th>
+                                  <th>部门唯一标识符</th>
+                                  <th>部门信息</th>
                               </thead>
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <input type="checkbox" name=""  lay-skin="primary">
-                                  </td>
-                                  <td>1</td>
-                                  <td>admin</td>
-                                  <td>18925139194</td>
-                                  <td>113664000@qq.com</td>
-                                  <td>超级管理员</td>
-                                  <td>2017-01-01 11:11:42</td>
-                                  <td class="td-status">
-                                    <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span></td>
-                                  <td class="td-manage">
-                                    <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-                                      <i class="layui-icon">&#xe601;</i>
-                                    </a>
-                                    <a title="编辑"  onclick="xadmin.open('编辑','admin-edit.html')" href="javascript:;">
-                                      <i class="layui-icon">&#xe642;</i>
-                                    </a>
-                                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                                      <i class="layui-icon">&#xe640;</i>
-                                    </a>
-                                  </td>
-                                </tr>
+                              <tbody id="managerPage1_table1">
+                                
                               </tbody>
                             </table>
-                        </div>
-                        <div class="layui-card-body ">
-                            <div class="page">
-                                <div>
-                                  <a class="prev" href="">&lt;&lt;</a>
-                                  <a class="num" href="">1</a>
-                                  <span class="current">2</span>
-                                  <a class="num" href="">3</a>
-                                  <a class="num" href="">489</a>
-                                  <a class="next" href="">&gt;&gt;</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,71 +50,39 @@
         </div> 
     </body>
     <script>
-      layui.use(['laydate','form'], function(){
-        var laydate = layui.laydate;
-        var form = layui.form;
-        
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#start' //指定元素
-        });
+      $(document).ready(function () {
+        var proposerCode1 = layui.data('allData').userInfo.userCode;
+        $.ajax({
+            async: true,
+            type: "GET",
+            url: "http://47.102.42.105:7891/department/getDepartment?userCode="+proposerCode1,
+            dataType: "json",
+            contentType: "application/json",
+            success: function (result) {
+                var aaaa = result.infos;
 
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#end' //指定元素
-        });
-      });
-
-       /*用户-停用*/
-      function member_stop(obj,id){
-          layer.confirm('确认要停用吗？',function(index){
-
-              if($(obj).attr('title')=='启用'){
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
-
-              }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
-              }
-              
-          });
-      }
-
-      /*用户-删除*/
-      function member_del(obj,id){
-          layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
-          });
-      }
-
-
-
-      function delAll (argument) {
-
-        var data = tableCheck.getData();
-  
-        layer.confirm('确认要删除吗？'+data,function(index){
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
-        });
-      }
+                var table_temp = $("#managerPage1_table1");
+                table_temp.html("");
+                var str = "";
+                for (var index = 0; index < aaaa.length; index++) {
+                    str += "<tr><th>" + index + "</th>";
+                    str += "<th>" + aaaa[index].departmentName + "</th>";
+                    if(aaaa[index].userRole==1){
+                      str += "<th>" + "部门创建者" + "</th>";
+                    }else if(aaaa[index].userRole==2){
+                      str += "<th>" + "部门管理者" + "</th>";
+                    }else if(aaaa[index].userRole==3){
+                      str += "<th>" + "用户" + "</th>";
+                    }
+                    var date = new Date( parseInt((aaaa[index].departmentCode).substr(4))).toLocaleString().replace(/:\d{1,2}$/,' ');
+                    str += "<th>" + date+ "</th>";
+                    str += "<th>" + aaaa[index].departmentCode + "</th>";
+                    str += "<th>" + aaaa[index].departmentInfo + "</th></tr>";
+                    
+                }
+                table_temp.append(str);
+            }
+        })
+    });
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
 </html>

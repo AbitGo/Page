@@ -55,7 +55,8 @@
                 p.userCode_t AS userCode,
                 p.departmentCode_t AS departmentCode,
                 p.userRole_t AS userRole,
-                d.departmentName_t as departmentName
+                d.departmentName_t as departmentName,
+                d.departmentInfo_t as departmentInfo
             FROM
                 personnel AS p
             INNER JOIN department AS d on d.departmentCode_t = p.departmentCode_t
