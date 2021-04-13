@@ -29,13 +29,20 @@
             <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
         </a>
     </div>
+    <div class="layui-card-header">
+        <button class="layui-btn" onclick=updateInnerData(0)><i class="layui-icon"></i>未审核</button>
+        <button class="layui-btn" onclick=updateInnerData(1)><i class="layui-icon"></i>已通过</button>
+        <button class="layui-btn" onclick=updateInnerData(2)><i class="layui-icon"></i>审核已拒绝</button>
+        <button class="layui-btn" onclick=updateInnerData(3)><i class="layui-icon"></i>任务已过期</button>
+        <button class="layui-btn" onclick=updateInnerData(4)><i class="layui-icon"></i>已执行</button>
+    </div>
     <div class="layui-fluid">
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md12">
                 <div class="layui-card">
 
                     <div class="layui-card-body ">
-                        <table class="layui-table layui-form" id="managerPage1_table1">
+                        <table class="layui-table layui-form" >
                             <thead>
                                 <tr>
                                     <th>序号</th>
@@ -48,7 +55,7 @@
                                     <th>操作</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="managerPage1_table1">
                             </tbody>
                         </table>
                     </div>
@@ -73,6 +80,41 @@
             });
         });
 
+        function updateInnerData(i) {
+        var proposerCode1 = layui.data('allData').userInfo.userCode;
+        $.ajax({
+            async: true,
+            type: "POST",
+            url: "http://47.102.42.105:7891/device/SearchDeviceTaskByManager",
+            dataType: "json",
+            data: JSON.stringify({
+                userCode: proposerCode1,
+                taskStatus: i,
+                index: 1,
+                limit: 100
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                var aaaa = result.infos;
+
+                var table_temp = $("#managerPage1_table1");
+                table_temp.html("");
+                var str = "";
+                for (var index = 0; index < aaaa.length; index++) {
+                    str += "<tr><th>" + index + "</th>";
+
+                    str += "<th>" + aaaa[index].taskCode + "</th>";
+                    str += "<th>" + aaaa[index].deviceIMEI + "</th>";
+                    str += "<th>" + aaaa[index].deviceName + "</th>";
+                    str += "<th>" + aaaa[index].userName + "</th>";
+                    str += "<th>" + new Date(parseInt(aaaa[index].taskTime) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ') + "</th>";
+                    str += "<th>" + aaaa[index].taskStatus + "</th></tr>";
+                    
+                }
+                table_temp.append(str);
+            }
+        })
+    }
     $(document).ready(function () {
         var proposerCode1 = layui.data('allData').userInfo.userCode;
         $.ajax({
@@ -91,6 +133,7 @@
                 var aaaa = result.infos;
 
                 var table_temp = $("#managerPage1_table1");
+                table_temp.html("");
                 var str = "";
                 for (var index = 0; index < aaaa.length; index++) {
                     str += "<tr><th>" + index + "</th>";
@@ -101,7 +144,7 @@
                     str += "<th>" + aaaa[index].userName + "</th>";
                     str += "<th>" + new Date(parseInt(aaaa[index].taskTime) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ') + "</th>";
                     str += "<th>" + aaaa[index].taskStatus + "</th></tr>";
-                    str += "<th>" + aaaa[index].taskTime + "</th></tr>";
+                    
                 }
                 table_temp.append(str);
             }
