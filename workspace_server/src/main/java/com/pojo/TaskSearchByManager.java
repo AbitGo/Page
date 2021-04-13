@@ -15,9 +15,46 @@ public class TaskSearchByManager {
     @ApiModelProperty("页数")
     private int limit;
     @ApiModelProperty("管理员的唯一ID")
-    private String userCode;
+    private String proposerCode;
     @ApiModelProperty("需要搜寻的任务状态")
     private String taskStatus;
+    @ApiModelProperty("isUser")
+    private int isUser;
+    private String deviceIMEI;
+    private String taskCode;
+    private long taskTime;
+
+    public long getTaskTime() {
+        return taskTime;
+    }
+
+    public void setTaskTime(long taskTime) {
+        this.taskTime = taskTime;
+    }
+
+    public String getTaskCode() {
+        return taskCode;
+    }
+
+    public void setTaskCode(String taskCode) {
+        this.taskCode = taskCode;
+    }
+
+    public String getDeviceIMEI() {
+        return deviceIMEI;
+    }
+
+    public void setDeviceIMEI(String deviceIMEI) {
+        this.deviceIMEI = deviceIMEI;
+    }
+
+    public int getIsUser() {
+        return isUser;
+    }
+
+    public void setIsUser(int isUser) {
+        this.isUser = isUser;
+    }
 
     public int getIndex() {
         return index;
@@ -35,12 +72,12 @@ public class TaskSearchByManager {
         this.limit = limit;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public String getProposerCode() {
+        return proposerCode;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
+    public void setProposerCode(String proposerCode) {
+        this.proposerCode = proposerCode;
     }
 
     public String getTaskStatus() {

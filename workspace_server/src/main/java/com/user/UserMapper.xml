@@ -17,17 +17,25 @@
     </select>
 
     <select id="userSearch" parameterType="com.pojo.UserSearchInfo" resultType="map">
-        select userName_t as userName,
-        userEmail_t as userEmail,
-        userLoginName_t as userLoginName,
-        userCode_t as userCode
-         from user where 1=1
-         <choose>
-             <when test="userInfo!=null">
-                  and ((userEmail_t like "%"#{userInfo}"%") or
-                 (userLoginName_t like "%"#{userInfo}"%"))
-             </when>
-         </choose>
+        SELECT
+            temp.userCode_t AS userCode,
+            userName_t AS userName,
+            userEmail_t AS userEmail,
+            temp.userRole_t AS userRole,
+	        temp.departmentCode_t AS departmentCode
+        FROM
+            (
+                SELECT
+                    personnelCode_t,
+                    p.userCode_t,
+                    userRole_t,
+                    p.departmentCode_t
+                FROM
+                    personnel AS p
+            ) AS temp
+        INNER JOIN user AS u ON u.userCode_t = temp.userCode_t
+        WHERE
+            temp.departmentCode_t = #{departmentCode}
 
     </select>
 

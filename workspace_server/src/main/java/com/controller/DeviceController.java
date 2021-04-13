@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +106,8 @@ public class DeviceController {
         int limit = deviceDeleteInfo.getLimit();
         PageHelper.startPage(index,limit);
         ReturnMessage returnMessage = new ReturnMessage();
-        List<Map<String,Object>> results = deviceService.searchDevice(deviceDeleteInfo,index,limit);
+        System.out.println(deviceDeleteInfo.getDepartmentCode());
+        List<Map<String,Object>> results = deviceService.searchDevice(deviceDeleteInfo.getDepartmentCode(),index,limit);
 
         //设置返回的总记录数
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(results);
@@ -143,12 +145,12 @@ public class DeviceController {
     @ApiOperation(value = "添加任务",notes = "使用必选参数添加任务")
     @RequestMapping(value = "/device/AddDeviceTask", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public String AddDeviceTask(@RequestBody @ApiParam(name = "添加任务",value = "传入参数",required = true) TaskAddAndSearchInfo taskAddInfo) throws Exception {
+    public String AddDeviceTask(@RequestBody @ApiParam(name = "添加任务",value = "传入参数",required = true) TaskSearchByManager taskAddInfo) throws Exception {
 
         taskAddInfo.setTaskCode("TASK"+System.currentTimeMillis());
         ReturnMessage returnMessage = new ReturnMessage();
         //代码复用.锁具状态为0
-        taskAddInfo.setTaskStatus(0);
+        taskAddInfo.setTaskStatus("0");
         taskAddInfo.setTaskTime(System.currentTimeMillis()/1000);
         List<Map<String,Object>> results = deviceService.searchTaskByProposeCode(taskAddInfo,1,1);
         if(results.size() !=0 ){
@@ -163,31 +165,21 @@ public class DeviceController {
         }
     }
 
-    @ApiOperation(value = "用户查找任务",notes = "使用必选参数添加任务")
-    @RequestMapping(value = "/device/SearchDeviceTaskByUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin
-    public String SearchDeviceTaskByUser(@RequestBody @ApiParam(name = "用户查找任务",value = "传入参数",required = true) TaskAddAndSearchInfo taskAddInfo) throws Exception {
-
-
-        int index = taskAddInfo.getIndex();
-        int limit = taskAddInfo.getLimit();
-        List<Map<String,Object>> results = deviceService.searchTaskByProposeCode(taskAddInfo,index,limit);
-        //设置返回的总记录数
-        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(results);
-        Long count = pageInfo.getTotal();
-        Map<String,Object> result = PubicMethod.countPage(index,limit,count);
-        ReturnMessage returnMessage = new ReturnMessage("1","任务查找成功",result,results);
-        return JSONObject.toJSONString(returnMessage);
-    }
-
 
     @ApiOperation(value = "管理员查找任务",notes = "使用必选参数添加任务")
-    @RequestMapping(value = "/device/SearchDeviceTaskByManager", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/device/SearchDeviceTask", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public String SearchDeviceTaskByManager(@RequestBody @ApiParam(name = "用户查找任务",value = "传入参数",required = true) TaskSearchByManager taskSearchByManager) throws Exception {
+    public String SearchDeviceTask(@RequestBody @ApiParam(name = "用户查找任务",value = "传入参数",required = true) TaskSearchByManager taskSearchByManager) throws Exception {
         int index = taskSearchByManager.getIndex();
         int limit = taskSearchByManager.getLimit();
-        List<Map<String,Object>> results = deviceService.searchTaskByManager(taskSearchByManager,index,limit);
+        int isUser = taskSearchByManager.getIsUser();
+        List<Map<String,Object>> results = new ArrayList<>();
+
+        if(isUser==0){
+            results= deviceService.searchTaskByManager(taskSearchByManager,index,limit);
+        }else if(isUser==1){
+            results = deviceService.searchTaskByProposeCode(taskSearchByManager,index,limit);
+        }
         //设置返回的总记录数
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(results);
         Long count = pageInfo.getTotal();

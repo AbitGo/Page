@@ -12,59 +12,15 @@
         delete from device where deviceIMEI_t = #{deviceIMEI}
     </delete>
 
-    <select id="searchDevice" parameterType="com.pojo.DeviceDeleteOrSearchInfo" resultType="map">
+    <select id="searchDevice" parameterType="string" resultType="map">
         select
         deviceIMEI_t as deviceIMEI,
         deviceInfo_t as deviceInfo,
         deviceName_t as deviceName,
         deviceDefaultPWD_t as deviceDefaultPWD,
         departmentCode_t as departmentCode
-        from device
-        where 1=1
-        <choose>
-            <when test="deviceName!=null">
-                and deviceName_t like "%"#{deviceName}"%"
-            </when>
-
-            <when test="deviceIMEI!=null">
-                and deviceIMEI_t like "%"#{deviceIMEI}"%"
-            </when>
-            <when test="departmentCode!=null">
-                and departmentCode_t =#{departmentCode}
-            </when>
-        </choose>
-
+        from device where departmentCode_t =#{param}
     </select>
-
-    <select id="searchTaskByProposeCode" parameterType="com.pojo.TaskAddAndSearchInfo" resultType="map">
-        select * from task where 1=1
-        <if test="proposerCode!=null">
-            and proposerCode_t = #{proposerCode}
-        </if>
-        <if test="deviceIMEI!=null">
-            and deviceIMEI_t = #{deviceIMEI}
-        </if>
-        <if test="taskTime!=null">
-            and (#{taskTime} -taskTime_t) &lt; 300
-        </if>
-        <if test="taskStatus!=null">
-            and taskStatus_t = #{taskStatus}
-        </if>
-    </select>
-
-    <insert id="addTask" parameterType="com.pojo.TaskAddAndSearchInfo">
-        INSERT INTO task (
-            taskCode_t,
-            proposerCode_t,
-            deviceIMEI_t,
-            taskTime_t,
-            taskStatus_t
-        ) values (#{taskCode},
-            #{proposerCode},
-            #{deviceIMEI},
-            UNIX_TIMESTAMP(NOW()),
-            0)
-    </insert>
 
     <select id="searchTaskByManager" parameterType="com.pojo.TaskSearchByManager" resultType="map">
         SELECT
@@ -89,13 +45,50 @@
                     personnel
                     WHERE
                     userRole_t   &lt; 3
-                AND userCode_t = #{userCode}
+                AND userCode_t = #{proposerCode}
             )
         ) AS temp ON temp.deviceIMEI_t = t.deviceIMEI_t
         AND t.taskStatus_t = #{taskStatus}
-        INNER JOIN  user as u  ON
-        u.userCode_t = #{userCode}
+        INNER JOIN  user as u ON
+        u.userCode_t = #{proposerCode}
     </select>
+
+    <select id="searchTaskByProposeCode" parameterType="com.pojo.TaskSearchByManager" resultType="map">
+
+        SELECT
+        "X" as userName,
+        temp.taskCode_t as taskCode,
+        temp.proposerCode_t as proposerCode,
+        temp.deviceIMEI_t as deviceIMEI,
+        temp.taskStatus_t as taskStatus,
+        temp.taskTime_t as taskTime,
+        d.deviceName_t as deviceName
+         FROM
+        (SELECT
+            *
+        FROM
+            task as t
+        WHERE
+         taskStatus_t = #{taskStatus}
+         and proposerCode_t = #{proposerCode}
+        )as temp INNER JOIN user as u on temp.proposerCode_t = u.userCode_t
+        inner join device as d on d.deviceIMEI_t = temp.deviceIMEI_t
+    </select>
+
+    <insert id="addTask" parameterType="com.pojo.TaskAddAndSearchInfo">
+        INSERT INTO task (
+            taskCode_t,
+            proposerCode_t,
+            deviceIMEI_t,
+            taskTime_t,
+            taskStatus_t
+        ) values (#{taskCode},
+            #{proposerCode},
+            #{deviceIMEI},
+            UNIX_TIMESTAMP(NOW()),
+            0)
+    </insert>
+
 
     <update id="auditTaskByTaskCode" parameterType="com.pojo.TaskAuditInfo">
         update task set taskStatus_t =#{taskStatus} where taskCode_t = #{taskCode}

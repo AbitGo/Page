@@ -18,13 +18,13 @@ public class DeviceService {
         return deviceMapper.deleteDevice(param);
     }
 
-    public List<Map<String,Object>> searchDevice(DeviceDeleteOrSearchInfo param,int page,int limit){
+    public List<Map<String,Object>> searchDevice(String param,int page,int limit){
         return deviceMapper.searchDevice(param);
     }
-    public int addTask(TaskAddAndSearchInfo taskAddInfo){
+    public int addTask(TaskSearchByManager taskAddInfo){
         return deviceMapper.addTask(taskAddInfo);
     }
-    public List<Map<String,Object>> searchTaskByProposeCode(TaskAddAndSearchInfo param,int page,int limit){
+    public List<Map<String,Object>> searchTaskByProposeCode(TaskSearchByManager param,int page,int limit){
         return deviceMapper.searchTaskByProposeCode(param);
     }
     public List<Map<String,Object>> searchTaskByManager(TaskSearchByManager taskSearchByManager,int page,int limit){
