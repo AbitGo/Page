@@ -1,5 +1,6 @@
 package com;
 
+import com.utli.TCPServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,6 +16,8 @@ public class AllApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AllApplication.class, args);
+        TCPServer tcpServer = new TCPServer();
+        tcpServer.init();
     }
 
 }

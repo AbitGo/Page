@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.utli.SocketParam.*;
+import static com.utli.TCPServer.tcpServer;
+
 /**
  * @author 韦海涛
  * @version 1.0
@@ -248,5 +251,23 @@ public class DeviceController {
         returnMessage.setInfos(results);
         returnMessage.setInfo(PubicMethod.countPage(index,limit,count));
         return JSONObject.toJSONString(returnMessage);
+    }
+
+
+    @RequestMapping(value = "/device/Test", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public String PostCommand(@RequestBody String GetJson) throws Exception {
+        JSONObject getJson = JSONObject.parseObject(GetJson);
+        String deviceCode = getJson.getString("deviceCode");
+        String deviceData = getJson.getString("deviceData");
+        String result = tcpServer.socketSendData(deviceCode,deviceData);
+        if(result.equals(SendSuccess)){
+            return "下发成功";
+        }else if(result.equals(SendError)){
+            return "下发失败.设备不在线";
+        }else if(result.equals(TimeOut)){
+            return "下发失败.设备超时";
+        }
+        return "下发失败";
     }
 }
