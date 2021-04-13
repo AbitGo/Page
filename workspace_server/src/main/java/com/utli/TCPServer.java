@@ -24,7 +24,7 @@ public class TCPServer extends Thread {
         tcpServer.start();
     }
 
-    public String socketSendData(String deviceCode,String sendData){
+    public String socketSendData(String deviceCode,String deviceData){
         //不为空时
         subSocketClient temp = DeviceCode2SocketMap.get(deviceCode);
         Long time = DeviceCode2LastestTime.get(deviceCode);
@@ -32,7 +32,7 @@ public class TCPServer extends Thread {
             return TimeOut;
         }
         if(null!=temp){
-            return temp.sendSocketData(sendData,deviceCode);
+            return temp.sendSocketData(deviceData,deviceCode);
         }else{
             return SendError;
         }

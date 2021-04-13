@@ -28,7 +28,7 @@ public class subSocketClient extends Thread {
         this.socket = socket;
     }
 
-    public String sendSocketData(String sendData,String deviceCode){
+    public String sendSocketData(String deviceData,String deviceCode){
         try {
             BufferedReader br = null;
             PrintWriter pw = null;
@@ -36,7 +36,7 @@ public class subSocketClient extends Thread {
             pw = new PrintWriter(socket.getOutputStream(), true);
             //查看socket是否存在
             if (!socket.isClosed()) {
-                pw.println(sendData);
+                pw.println(deviceData);
                 pw.flush();
                 return SendSuccess;
             }else {

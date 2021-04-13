@@ -212,6 +212,21 @@ public class DeviceController {
                 returnMessage.setExecuteMsg("该任务并不属于你");
             } else{
 
+                //
+                String result = tcpServer.socketSendData(result_task.getDeviceIMEI(),"01");
+                if(result.equals(SendSuccess)){
+                    ;
+                }else if(result.equals(SendError)){
+                    returnMessage.setExecuteStatus("0");
+                    returnMessage.setExecuteMsg("设备不在线");
+                    return JSONObject.toJSONString(returnMessage);
+                }else if(result.equals(TimeOut)){
+                    returnMessage.setExecuteStatus("0");
+                    returnMessage.setExecuteMsg("设备下发超时.请检查网络");
+                    return JSONObject.toJSONString(returnMessage);
+                }
+
+                //
                 returnMessage.setExecuteStatus("1");
                 returnMessage.setExecuteMsg("该任务已下发");
                 param.put("taskCode",result_task.getTaskCode());
@@ -245,7 +260,6 @@ public class DeviceController {
         //设置返回的总记录数
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(results);
         Long count = pageInfo.getTotal();
-
         returnMessage.setExecuteStatus("1");
         returnMessage.setExecuteMsg("查找成功");
         returnMessage.setInfos(results);
