@@ -128,13 +128,13 @@ public class DepartmentFragment extends Fragment {
             }
         });
         CustomDialog addDepRequestDialog = new CustomDialog(getContext(),(ed1, ed2) -> {
-            if (!TextUtils.isEmpty(ed1) && !TextUtils.isEmpty(ed2)) {
-                addDepRequest(ed1, ed2);
+            if (!TextUtils.isEmpty(ed1)) {
+                addDepRequest(ed1, getArguments().getString("userCode"));
             } else {
                 ToastUtil.showMsg("输入信息不能为空请重新输入.");
             }
         });
-        addDepRequestDialog.setTitle("创建部门").setHint1("部门名称").setHint2("部门所属").setShowEd1(true).setShowEd2(true);
+        addDepRequestDialog.setTitle("创建部门").setHint1("部门名称").setShowEd1(true);
         btn_add.setOnClickListener(v -> {
             addDepRequestDialog.show();
         });
@@ -165,7 +165,7 @@ public class DepartmentFragment extends Fragment {
     }
 
     private void addDepRequest(String name, String root) {
-        okHttpUtils.postRequest(FastJsonUtil.toJson(GeneralUtil.generalJsonArray("departmentName", name, "departmentRoot", root)), HttpParam.DEPARTMENT_ADD, new Callback() {
+        okHttpUtils.postRequest(FastJsonUtil.toJson(GeneralUtil.generalJsonArray("departmentName", name, "departmentRoot", root)), HttpParam.DEPARTMENT_CREATE, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();

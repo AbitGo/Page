@@ -5,7 +5,14 @@
     android:layout_height="wrap_content"
 
     android:background="@drawable/buttonshape">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/departmantmanager"
+        ></ImageView>
     <TextView
+
         android:textSize="50dp"
 
         android:id="@+id/departmentName"

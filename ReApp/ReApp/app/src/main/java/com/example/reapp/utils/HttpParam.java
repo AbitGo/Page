@@ -7,7 +7,7 @@ public class HttpParam {
     public final static String userRegister = url + "/user/userRegister";
     public final static String userDepartment_get = url + "/department/getDepartment?userCode=";
     public final static String TASK_GET = url + "/device/SearchDeviceTaskByManager";
-    public final static String DEPARTMENT_ADD = url + "/department/departmentCreate";
+    public final static String DEPARTMENT_CREATE= url + "/department/departmentCreate";
     public final static String TASK_ADD = url + "/device/AddDeviceTask";
     public final static String DEPARTMENT_SEARCH = url + "/user/userSearch";
     public final static String DEVICE_SEARCH = url + "/device/SearchDevice";

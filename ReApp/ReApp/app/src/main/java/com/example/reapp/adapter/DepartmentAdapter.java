@@ -39,7 +39,13 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.De
     @Override
     public void onBindViewHolder(@NonNull DepartmentViewHolder holder, int position) {
         holder.tv_departmentName.setText("部门名称: " + departmentInners.get(position).getDepartmentName());
-        holder.tv_departmentRole.setText("用户组: " + departmentInners.get(position).getUserRole());
+        if(departmentInners.get(position).getUserRole()==1){
+            holder.tv_departmentRole.setText("角色: 部门创建者");
+        }else if(departmentInners.get(position).getUserRole()==2){
+            holder.tv_departmentRole.setText("角色: 部门管理员");
+        }else if(departmentInners.get(position).getUserRole()==3){
+            holder.tv_departmentRole.setText("角色: 用户");
+        }
         holder.itemView.setOnClickListener(v -> {
             clickListener.onClick(position);
         });
