@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_department"
+            android:icon="@drawable/travel"
+            android:title="@string/departmentHome" />
+
+        <item
+            android:id="@+id/nav_task"
+            android:icon="@drawable/news"
+            android:title="@string/taskHome" />
+
+        <item
+            android:id="@+id/nav_record"
+            android:icon="@drawable/user"
+            android:title="@string/logHome" />
+    </group>
+
+</menu>

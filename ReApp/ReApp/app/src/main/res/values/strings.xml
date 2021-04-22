@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">NB智能锁群</string>
+    <string name="developer">开发者:韦海涛</string>
+    <string name="school">USTS-苏州科技大学</string>
+    <string name="teacher">指导教师:傅启明</string>
+    <string name="version">版本号:V0.0.1</string>
+    <string name="radius_inner">80dp</string>
+    <string name="radius_outer">90dp</string>
+    <string name="loginout">退出</string>
+    <string name="scan">扫一扫</string>
+    <string name="about">关于</string>
+    <string name="codeinput">请输入验证码</string>
+    <string name="home">首页</string>
+    <string name="news">新闻</string>
+    <string name="user">用户</string>
+    <string name="logintext">用户登录</string>
+    <string name="uername">登录名</string>
+    <string name="password">登录密码</string>
+    <string name="register">注册</string>
+    <string name="registerOK">确认注册</string>
+    <string name="login">登录</string>
+    <string name="loginNull">请输入登录名或者邮箱</string>
+    <string name="passwordNull">请输入登录密码</string>
+    <string name="loginname">请输入登录名</string>
+    <string name="loginemail">请输入登录邮箱</string>
+    <string name="networkfail">网络连接失败</string>
+    <string name="forgetpwd">忘记密码</string>
+    <string name="definenull">null</string>
+    <string name="departmentHome" translatable="false">部门</string>
+    <string name="taskHome" translatable="false">任务</string>
+    <string name="logHome" translatable="false">记录</string>
+    <string name="DepartmentFragment" translatable="false">部门人员</string>
+    <string name="AODName" translatable="false">姓名:</string>
+    <string name="AODEmail" translatable="false">邮箱:</string>
+    <string name="AODLoginName" translatable="false">登录名:</string>
+    <string name="DeviceFragment" translatable="false">设备</string>
+    <string name="DeviceName" translatable="false">设备名称:</string>
+    <string name="DeviceIMEI" translatable="false">IMEI:</string>
+    <string name="DeviceInfo" translatable="false">设备关于:</string>
+    <string name="DeviceDepartmentCode" translatable="false">部门码:</string>
+    <string name="OpenLock" translatable="false">开锁</string>
+    <string name="Lock" translatable="false">上锁</string>
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NB Smart Lock Group</string>
+    <string name="developer">Developer:韦海涛</string>
+    <string name="school">USTS-苏州科技大学</string>
+    <string name="teacher">Faculty Adviser:傅启明</string>
+    <string name="version">Version:V0.0.1</string>
+    <string name="radius_inner">80dp</string>
+    <string name="radius_outer">90dp</string>
+    <string name="loginout">Exit</string>
+    <string name="scan">Scan</string>
+    <string name="about">About</string>
+    <string name="codeinput">Please enter the verification code</string>
+    <string name="home">Home</string>
+    <string name="news">News</string>
+    <string name="user">User</string>L
+    <string name="logintext">UserLogin</string>
+    <string name="uername">UserName</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="registerOK">Confirm Register</string>
+    <string name="login">Login</string>
+    <string name="loginNull">please input LoginName or E-mail</string>
+    <string name="passwordNull">please input LoginPassword</string>
+    <string name="loginname">please input LoginName</string>
+    <string name="loginemail">please input LoginE-mail</string>
+    <string name="networkfail">connect network failed</string>
+    <string name="forgetpwd">forget pwd</string>
+    <string name="definenull">definenull</string>
+    <string name="departmentHome" translatable="false">Department</string>
+    <string name="taskHome" translatable="false">Task</string>
+    <string name="logHome" translatable="false">Log</string>
+    <string name="DepartmentFragment" translatable="false">Department members</string>
+    <string name="AODName" translatable="false">Name: </string>
+    <string name="AODEmail" translatable="false">Email: </string>
+    <string name="AODLoginName" translatable="false">LoginName: </string>
+    <string name="DeviceFragment" translatable="false">Device</string>
+    <string name="DeviceName" translatable="false">DeviceName:</string>
+    <string name="DeviceIMEI" translatable="false">IMEI:</string>
+    <string name="DeviceInfo" translatable="false">Device Info: </string>
+    <string name="DeviceDepartmentCode" translatable="false">Department Code:</string>
+    <string name="OpenLock" translatable="false">Open Lock</string>
+    <string name="Lock" translatable="false">Lock</string>
+</resources>
