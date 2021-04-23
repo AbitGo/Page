@@ -130,9 +130,4 @@ public class UserController {
         ReturnMessage returnMessage = new ReturnMessage("1", "搜索成功", result);
         return JSONObject.toJSONString(returnMessage);
     }
-
-
-
-
-
 }
