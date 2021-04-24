@@ -107,19 +107,30 @@ public class TaskFragment extends Fragment {
         tv_title = view.findViewById(R.id.tv_title);
         tv_pop = view.findViewById(R.id.tv_pop);
         taskAdapter = new TaskAdapter(taskInfos, position -> {
-            if (!isAdmin) {
-                ToastUtil.showMsg("请开启管理员模式");
-                return;
-            }
+            //任务状态
             int taskStatus = taskInfos.get(position).getTaskStatus();
-            if (taskStatus == 0){
-                CustomDialog taskVerifyDialog = new CustomDialog(context, (ed1, ed2) -> {
-                    taskVerify(taskInfos.get(position).getTaskCode(), taskStatus+"");
-                });
-                taskVerifyDialog.setTitle("请审核");
-                taskVerifyDialog.show();
-            } else {
-                ToastUtil.showMsg("无需审核操作");
+            //非管理员操作
+            if (!isAdmin) {
+                if(taskStatus==0){
+                    ToastUtil.showMsg("请开启管理员模式");
+                }else if(taskStatus==1){
+                    //TO DO
+                    //下发代码
+                }else{
+                    ToastUtil.showMsg("无需操作");
+                }
+                return;
+            }else{
+                //任务开始审核
+                if(taskStatus==0){
+                    CustomDialog taskVerifyDialog = new CustomDialog(context, (ed1, ed2) -> {
+                        taskVerify(taskInfos.get(position).getTaskCode(), "1");
+                    });
+                    taskVerifyDialog.setTitle("请审核");
+                    taskVerifyDialog.show();
+                }else{
+                    ToastUtil.showMsg("无需操作");
+                }
             }
         });
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -150,7 +161,7 @@ public class TaskFragment extends Fragment {
         okHttpUtils.postRequest(FastJsonUtil.toJson(GeneralUtil.generalJsonArray("proposerCode", userCode,
                 "taskStatus", taskStatus,
                 "index", "1",
-                "limit", "5",
+                "limit", "100",
                 "isUser", "0")), HttpParam.SEARCH_DEVICE_TASK, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
