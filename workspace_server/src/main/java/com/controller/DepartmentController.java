@@ -63,7 +63,6 @@ public class DepartmentController {
         try {
             departmentService.departmentUpdate(departmentUpdateInfo);
         }catch (Exception e){
-            //e.printStackTrace();
             returnMessage.setExecuteStatus("0");
             returnMessage.setExecuteMsg("修改失败.部门名已被使用");
             return JSONObject.toJSONString(returnMessage);
