@@ -228,7 +228,7 @@ public class DeviceController {
             } else{
 
                 //
-                String result = tcpServer.socketSendData(result_task.getDeviceIMEI(),"01");
+                String result = tcpServer.socketSendData("","01");
                 if(result.equals(SendSuccess)){
                     ;
                 }else if(result.equals(SendError)){

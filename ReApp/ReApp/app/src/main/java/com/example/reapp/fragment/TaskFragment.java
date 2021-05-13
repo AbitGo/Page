@@ -116,7 +116,11 @@ public class TaskFragment extends Fragment {
                 } else if (taskStatus == 1) {
                     //TO DO
                     //下发代码
-                    
+                    CustomDialog taskVerifyDialog = new CustomDialog(context, (ed1, ed2) -> {
+                        taskExecute(userCode,taskInfos.get(position).getTaskCode());
+                    });
+                    taskVerifyDialog.setTitle("是否开锁");
+                    taskVerifyDialog.show();
                 } else {
                     ToastUtil.showMsg("无需操作");
                 }
@@ -127,7 +131,7 @@ public class TaskFragment extends Fragment {
                     CustomDialog taskVerifyDialog = new CustomDialog(context, (ed1, ed2) -> {
                         taskVerify(taskInfos.get(position).getTaskCode(), "1");
                     });
-                    taskVerifyDialog.setTitle("请审核");
+                    taskVerifyDialog.setTitle("请审核任务");
                     taskVerifyDialog.show();
                 } else {
                     ToastUtil.showMsg("无需操作");
@@ -181,6 +185,27 @@ public class TaskFragment extends Fragment {
                     handler.sendEmptyMessage(StaticVariable.SHOW_MSG);
                 }
                 System.out.println("TaskFragment: " + ts);
+            }
+        });
+    }
+
+    private void taskExecute(String userCode,String taskCode){
+        okHttpUtils.postRequest(FastJsonUtil.toJson(GeneralUtil.generalJsonArray("taskCode", taskCode,
+                "proposerCode", userCode)), HttpParam.DEVICE_UnlockTask, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String json = response.body().string().trim();
+                ResultInfo resultInfo = FastJsonUtil.toBean(json, ResultInfo.class);
+                Message message = new Message();
+                message.what = StaticVariable.TOAST_MSG;
+                message.obj = resultInfo.getExecuteMsg();
+                handler.sendMessage(message);
+                System.out.println("taskVerify:" + json);
             }
         });
     }

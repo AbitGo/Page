@@ -18,6 +18,8 @@ public class HttpParam {
     public final static String PERSON_Authorization = url + "/department/personAuthorization";
     public final static String DEVICE_ADD = url + "/device/addDevice";
     public final static String DEVICE_DELETE = url + "/device/deleteDevice";
+    public final static String DEVICE_UnlockTask = url + "/device/UnlockbyTask";
+
     public final static String DEPARTMENT_UPDATE = url + "/department/departmentUpdate";
 
 }
