@@ -111,30 +111,33 @@ public class TaskFragment extends Fragment {
             int taskStatus = taskInfos.get(position).getTaskStatus();
             //非管理员操作
             if (!isAdmin) {
-                if(taskStatus==0){
+                if (taskStatus == 0) {
                     ToastUtil.showMsg("请开启管理员模式");
-                }else if(taskStatus==1){
+                } else if (taskStatus == 1) {
                     //TO DO
                     //下发代码
-                }else{
+                    
+                } else {
                     ToastUtil.showMsg("无需操作");
                 }
                 return;
-            }else{
+            } else {
                 //任务开始审核
-                if(taskStatus==0){
+                if (taskStatus == 0) {
                     CustomDialog taskVerifyDialog = new CustomDialog(context, (ed1, ed2) -> {
                         taskVerify(taskInfos.get(position).getTaskCode(), "1");
                     });
                     taskVerifyDialog.setTitle("请审核");
                     taskVerifyDialog.show();
-                }else{
+                } else {
                     ToastUtil.showMsg("无需操作");
                 }
             }
         });
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             isAdmin = isChecked;
+            taskRequest(userCode, "0");
+            taskAdapter.removeAll();
         });
         tv_title.setOnClickListener(v -> {
             AdminTestActivity.actionStart(context);
@@ -146,7 +149,7 @@ public class TaskFragment extends Fragment {
             PopupWindow popupWindow = new PopupWindow(popView, tv_pop.getWidth(), ViewGroup.LayoutParams.WRAP_CONTENT, true);
             popupWindow.showAsDropDown(tv_pop);
             recyclerView.setAdapter(new PopAdapter(statusList, pos -> {
-                taskRequest(userCode, pos+"");
+                taskRequest(userCode, pos + "");
                 taskAdapter.removeAll();
                 popupWindow.dismiss();
             }));
@@ -162,7 +165,7 @@ public class TaskFragment extends Fragment {
                 "taskStatus", taskStatus,
                 "index", "1",
                 "limit", "100",
-                "isUser", "0")), HttpParam.SEARCH_DEVICE_TASK, new Callback() {
+                "isUser", (isAdmin ? "0" : "1"))), HttpParam.SEARCH_DEVICE_TASK, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();

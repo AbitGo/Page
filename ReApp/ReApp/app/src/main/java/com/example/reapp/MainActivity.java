@@ -93,10 +93,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     //不用加入回退栈中直接hide
     public void switchFragment(int showFragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //要显示的Fragment
-        Fragment currentFragment = fragmentList.get(showFragment);
-        //要隐藏的Fragment
-        Fragment hideFragment = fragmentList.get(lastIndex);
+        Fragment currentFragment = fragmentList.get(showFragment);//要显示的Fragment
+        Fragment hideFragment = fragmentList.get(lastIndex);//要隐藏的Fragment
         //将当前的展示Fragment赋值给隐藏的索引下次执行此方法就可隐藏
         lastIndex = showFragment;
         transaction.hide(hideFragment);

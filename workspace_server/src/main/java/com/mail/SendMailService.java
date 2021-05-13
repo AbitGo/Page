@@ -36,6 +36,8 @@ public class SendMailService{
         }
     }
 
+
+
     public void sendHtmlMail(String email,String subject,String verificationCode){
         try{
             Configuration configuration = new Configuration(Configuration.VERSION_2_3_0);
@@ -45,8 +47,7 @@ public class SendMailService{
             StringWriter mail = new StringWriter();
             EmailInfo emailInfo = new EmailInfo(subject,verificationCode);
             template.process(emailInfo,mail);
-            sendEmail(email,"找回密码",
-                    mail.toString());
+            sendEmail(email,"找回密码", mail.toString());
         }catch (Exception e){
             e.printStackTrace();
         }

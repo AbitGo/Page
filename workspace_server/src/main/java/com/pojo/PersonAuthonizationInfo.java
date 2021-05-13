@@ -16,7 +16,7 @@ public class PersonAuthonizationInfo {
     private String departmentCode;
     @ApiModelProperty("人员角色D-必选")
     private int userRole;
-    @ApiModelProperty("系统生成-不选")
+    @ApiModelProperty("系统生成-可选")
     private String personnelCode;
 
     public String getUserCode() {

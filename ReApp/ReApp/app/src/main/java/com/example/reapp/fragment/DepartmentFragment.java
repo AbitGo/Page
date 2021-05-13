@@ -109,25 +109,26 @@ public class DepartmentFragment extends Fragment {
         department_refresh.setRefreshHeader(new ClassicsHeader(context));
         rv_department.setLayoutManager(new LinearLayoutManager(MyApplication.context));
         departmentAdapter = new DepartmentAdapter(departmentInnerList, position -> {
-            DepartmentActivity.actionStart(view.getContext(), departmentInnerList.get(position).getDepartmentCode(),userCode);
+            DepartmentActivity.actionStart(view.getContext(), departmentInnerList.get(position).getDepartmentCode(), userCode);
         }, pos -> {
             CustomDialog customDialog = new CustomDialog(context, (ed1, ed2) -> {
-                if (!TextUtils.isEmpty(ed1) && !TextUtils.isEmpty(ed2)){
+                if (!TextUtils.isEmpty(ed1) && !TextUtils.isEmpty(ed2)) {
                     updateDepInfo(ed1, ed2, departmentInnerList.get(pos).getDepartmentCode());
                 } else {
                     ToastUtil.showMsg("输入有误,重新输入");
                 }
             });
-            customDialog.setTitle("修改部门信息").setHint1("部门名称").setHint2("部门描述").setShowEd1(true).setShowEd2(true);
+            customDialog.setTitle("修改部门信息").setHint1("部门名称")
+                    .setHint2("部门描述").setShowEd1(true).setShowEd2(true);
             customDialog.show();
         });
         department_refresh.setOnRefreshListener(refreshLayout -> {
-            if (departmentAdapter != null){
+            if (departmentAdapter != null) {
                 departmentAdapter.removeAll();
                 departmentRequest(userCode);
             }
         });
-        CustomDialog addDepRequestDialog = new CustomDialog(getContext(),(ed1, ed2) -> {
+        CustomDialog addDepRequestDialog = new CustomDialog(getContext(), (ed1, ed2) -> {
             if (!TextUtils.isEmpty(ed1)) {
                 addDepRequest(ed1, getArguments().getString("userCode"));
             } else {
@@ -146,15 +147,13 @@ public class DepartmentFragment extends Fragment {
     private void departmentRequest(String userCode) {
         okHttpUtils.getRequest(HttpParam.userDepartment_get + userCode, new Callback() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
-            }
-
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {e.printStackTrace();}
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String json = response.body().string();
                 departmentInnerResultInfo = FastJsonUtil.toBean(json, ResultInfo.class);
-                List<DepartmentInner> ds = FastJsonUtil.toList(departmentInnerResultInfo.getInfos().toString(), DepartmentInner.class);
+                List<DepartmentInner> ds = FastJsonUtil.toList(departmentInnerResultInfo.getInfos()
+                                .toString(), DepartmentInner.class);
                 if (ds != null) {
                     departmentInnerList.addAll(ds);
                     handler.sendEmptyMessage(StaticVariable.SHOW_MSG);
@@ -174,7 +173,7 @@ public class DepartmentFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String json = response.body().string();
-                Log.i("addDepRequest",json);
+                Log.i("addDepRequest", json);
                 ResultInfo resultInfo = FastJsonUtil.toBean(json, ResultInfo.class);
                 if (resultInfo != null) {
                     Message message = new Message();
@@ -186,10 +185,10 @@ public class DepartmentFragment extends Fragment {
         });
     }
 
-    private void updateDepInfo(String departmentName,String departmentInfo, String departmentCode){
-        okHttpUtils.postRequest(FastJsonUtil.toJson(GeneralUtil.generalJsonArray("departmentCode",departmentCode,
-                "departmentInfo",departmentInfo,
-                "departmentName",departmentName)), HttpParam.DEPARTMENT_UPDATE, new Callback() {
+    private void updateDepInfo(String departmentName, String departmentInfo, String departmentCode) {
+        okHttpUtils.postRequest(FastJsonUtil.toJson(GeneralUtil.generalJsonArray("departmentCode", departmentCode,
+                "departmentInfo", departmentInfo,
+                "departmentName", departmentName)), HttpParam.DEPARTMENT_UPDATE, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();

@@ -25,7 +25,7 @@ public class TCPServer extends Thread {
     }
 
     public String socketSendData(String deviceCode, String deviceData) {
-        //不为空时
+        //如果当前长连接不为空时
         subSocketClient temp = DeviceCode2SocketMap.get(deviceCode);
         Long time = DeviceCode2LastestTime.get(deviceCode);
         if (null == time || System.currentTimeMillis() / 1000 - time > 300) {

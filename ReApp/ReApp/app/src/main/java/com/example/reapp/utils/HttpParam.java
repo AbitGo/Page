@@ -1,7 +1,7 @@
 package com.example.reapp.utils;
 
 public class HttpParam {
-    public final static String url="http://47.102.42.105:7891";
+    public final static String url="http://121.40.41.46:7891";
 
     public final static String userLogin = url + "/user/userLogin";
     public final static String userRegister = url + "/user/userRegister";

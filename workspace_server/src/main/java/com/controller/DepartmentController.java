@@ -86,7 +86,6 @@ public class DepartmentController {
         try {
             departmentService.addPersonAuthorization(personAuthonizationInfo);
         }catch (Exception e){
-            //e.printStackTrace();
             returnMessage.setExecuteStatus("0");
             returnMessage.setExecuteMsg("添加部门人员失败.此人已经在部门内部");
             return JSONObject.toJSONString(returnMessage);

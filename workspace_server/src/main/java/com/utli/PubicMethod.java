@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Random;
 
 public class PubicMethod {
+
+
 	public static Map<String,Object> countPage(int index,int limit,Long count){
 		//不满足一页数
 		Long page=0L;

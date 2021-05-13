@@ -70,9 +70,7 @@ public class subSocketClient extends Thread {
                 String deviceData = jsonObject.getString("deviceData");
                 DeviceCode2SocketMap.put(deviceCode,this);
                 DeviceCode2LastestTime.put(deviceCode,System.currentTimeMillis()/1000);
-
             }
-
             //线程停止10ms
             Thread.sleep(10);
         } catch (Exception e) {

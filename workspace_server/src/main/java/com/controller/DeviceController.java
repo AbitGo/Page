@@ -166,7 +166,7 @@ public class DeviceController {
     }
 
 
-    @ApiOperation(value = "管理员查找任务",notes = "使用必选参数添加任务")
+    @ApiOperation(value = "查找任务",notes = "使用必选参数添加任务")
     @RequestMapping(value = "/device/SearchDeviceTask", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public String SearchDeviceTask(@RequestBody @ApiParam(name = "用户查找任务",value = "传入参数",required = true) TaskSearchByManager taskSearchByManager) throws Exception {
