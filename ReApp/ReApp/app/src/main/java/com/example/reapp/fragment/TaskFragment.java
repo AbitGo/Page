@@ -1,6 +1,7 @@
 package com.example.reapp.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,11 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reapp.AdminTestActivity;
+import com.example.reapp.MainActivity;
 import com.example.reapp.MyApplication;
+import com.example.reapp.UserLoginActivity;
 import com.example.reapp.adapter.PopAdapter;
 import com.example.reapp.adapter.TaskAdapter;
 import com.example.reapp.customView.CustomDialog;
 import com.example.reapp.myinterface.DialogCallBack;
+import com.example.reapp.pojo.LoginResultData;
 import com.example.reapp.pojo.ResultInfo;
 import com.example.reapp.pojo.TaskInfo;
 import com.example.reapp.utils.FastJsonUtil;
@@ -81,6 +85,7 @@ public class TaskFragment extends Fragment {
             }
         }
     };
+
 
     public static TaskFragment getInstance(String userCode) {
         TaskFragment taskFragment = new TaskFragment();
@@ -206,6 +211,7 @@ public class TaskFragment extends Fragment {
                 message.obj = resultInfo.getExecuteMsg();
                 handler.sendMessage(message);
                 System.out.println("taskVerify:" + json);
+
             }
         });
     }

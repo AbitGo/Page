@@ -228,7 +228,7 @@ public class DeviceController {
             } else{
 
                 //
-                String result = tcpServer.socketSendData("","01");
+                String result = tcpServer.socketSendData("testDevice2","1");
                 if(result.equals(SendSuccess)){
                     ;
                 }else if(result.equals(SendError)){

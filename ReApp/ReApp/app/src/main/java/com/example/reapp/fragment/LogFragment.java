@@ -96,7 +96,7 @@ public class LogFragment extends Fragment {
     private void logRequest(String userCode) {
         okHttpUtils.postRequest(FastJsonUtil.toJson(GeneralUtil.generalJsonArray(
                 "index", "1",
-                "limit", "10",
+                "limit", "100",
                 "proposeCode", userCode)), HttpParam.DEVICE_SEARCH_RECORD, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
