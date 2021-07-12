@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Form.FormMapper">
+    <!--INSERT into menus (M_foodName,M_foodCode,M_foodPrice,M_foodClass)VALUES('麻辣烫','fod123123',11.3,1);-->
+    <select id="getMenu" resultType="map">
+        SELECT * from menus as m INNER JOIN foodclass as fc where m.M_foodClass = fc.FC_id
+    </select>
+
+    <select id="getFoodClass" resultType="map">
+        select * from foodclass
+    </select>
+
+    <select id="findFoodByName" resultType="map" parameterType="string">
+        SELECT * from menus as m INNER JOIN foodclass as fc where m.M_foodClass = fc.FC_id and m.M_foodName like "%"#{foodName}"%"
+    </select>
+
+    <insert id="addFoodClass" parameterType="string">
+        insert into orderfood.foodclass (FC_className) values (#{foodClassName})
+    </insert>
+
+    <delete id="deleteFoodClass" parameterType="int">
+        delete from orderfood.foodclass where FC_id=#{foodId}
+    </delete>
+
+    <insert id="addMenuFood" parameterType="map">
+        insert into orderfood.menus (M_foodName,M_foodCode,M_foodPrice,M_foodClass,M_foodDesc,M_foodPic) values (#{foodName},#{foodCode},#{foodPrice},#{foodClass},#{foodDesc},#{foodPic})
+    </insert>
+
+    <update id="updateMenuFood" parameterType="map">
+        update orderfood.menus set M_foodName=#{foodName},M_foodPrice=#{foodPrice},M_foodClass=#{foodClass},M_foodDesc=#{foodDesc},M_foodEnable=#{foodEnable},M_foodPic = #{foodPic} where M_foodCode = #{foodCode}
+    </update>
+
+    <update id="updateMenuFoodEnable" parameterType="map">
+        update orderfood.menus set M_foodEnable=#{foodEnable} where M_foodCode = #{foodCode}
+    </update>
+
+    <delete id="deleteMenuFood" parameterType="string">
+        delete from orderfood.menus where M_foodCode = #{foodCode}
+    </delete>
+
+    <insert id="insertOrder" parameterType="map">
+        insert into  orderfood.order (O_orderCode, O_orderTime, O_price) values (#{orderCode},#{orderTime},#{price});
+    </insert>
+
+    <insert id="insertInnerOrder">
+        <foreach collection="list" item="OrderList" index="index" separator=";">
+            insert into orderfood.innerorder
+                (I_foodCode, I_foodCount, I_orderCode) values (#{OrderList.foodCode},#{OrderList.foodCount},#{OrderList.orderCode})
+        </foreach>
+    </insert>
+
+    <select id="getOrder" parameterType="int" resultType="map">
+        select * from orderfood.order where O_status=#{status} order by O_orderTime
+    </select>
+
+    <select id="getInnerOrder" parameterType="string" resultType="map">
+        select * from orderfood.innerorder as i INNER JOIN menus as m where i.I_foodCode = m.M_foodCode and i.I_orderCode= #{orderCode}
+    </select>
+
+    <update id="updateOrderStatue" parameterType="map">
+        update orderfood.order set O_status = #{status} where O_orderCode = #{orderCode}
+    </update>
+
+</mapper>
