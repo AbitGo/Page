@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.provinceAndArea.AreaMapper">
+
+    <select id="findAreaByProvince" parameterType="string" resultType="com.provinceAndArea.AreaPojo">
+        select AreaName,AreaCode,ProvinceCode from area where ProvinceCode=#{provincesCode}
+    </select>
+    <select id="findProvince" resultType="com.provinceAndArea.ProvincePojo">
+        select ProvinceName,ProvinceCode from province
+    </select>
+
+
+</mapper>

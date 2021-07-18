@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.DeviceData.DeviceMapper">
+    <insert id="addDeviceByUserCode" parameterType="map">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select COUNT(DeviceIMEI) from device where DeviceIMEI = #{DeviceIMEI} and Enable =1
+        </selectKey>
+        insert into device set DeviceIMEI=#{DeviceIMEI},DeviceCode=#{DeviceCode},DeviceOwnner=#{DeviceOwnner},DeviceUser=#{DeviceUser},CreateTime=NOW(),UpdateTime=NOW(),DeviceName=#{DeviceName},DianXinCode=#{DianXinCode}
+    </insert>
+
+    <select id="getDeviceByUserCode" resultType="map">
+        SELECT
+            d.DeviceIMEI,
+            d.DeviceName,
+            d.DeviceCode,
+            d.DeviceOwnner,
+            d.DeviceUser,
+            d.DianXinCode,
+            (
+                SELECT
+                    u.UserName
+                FROM
+                    `user` AS u
+                WHERE
+                    u.UserCode = d.DeviceUser
+            ) AS UserName,
+
+            (
+                SELECT
+                    u.UserName
+                FROM
+                    `user` AS u
+                WHERE
+                    u.UserCode = d.DeviceOwnner
+            ) AS OwnnerName,
+
+            UpdateTime
+        FROM
+            device AS d
+        WHERE
+            ENABLE = 1
+        <choose>
+            <when test="UserCode!=null">
+                AND (
+                DeviceOwnner = #{UserCode}
+                OR DeviceUser = #{UserCode}
+                )
+            </when>
+        </choose>
+
+    </select>
+    <!--这里的代码其实可以使用or关键字去筛选-->
+    <select id="getDeviceByDeviceIMEI" resultType="string" parameterType="string">
+        select DianXinCode from device where DeviceIMEI = #{DeviceIMEI}
+    </select>
+    <select id="getDeviceByDeviceCode" resultType="string" parameterType="string">
+        select DianXinCode from device where DeviceCode = #{DeviceCode}
+    </select>
+
+    <delete id="deleteDeviceByDeviceCode" parameterType="string">
+        DELETE from device where DeviceCode = #{DeviceCode}
+    </delete>
+
+
+
+</mapper>

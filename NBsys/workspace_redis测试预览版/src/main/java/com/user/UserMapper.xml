@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.user.UserMapper">
+    <insert id="addUser" parameterType="map">
+        INSERT into `user`
+        (LoginName,LoginPassword,UserMail,UserName,UserCode,UserPhone,UserRole,Activity,Description,UserProvince,UserArea,LeaderCode)
+        values
+        (#{LoginName},#{LoginPassword},#{UserMail},#{UserName},#{UserCode},#{UserPhone},#{UserRole},#{Activity},#{Description},#{UserProvince},#{UserArea},#{LeaderCode})
+    </insert>
+
+    <select id="UserLogin" parameterType="string" resultType="map">
+        select LoginName,LoginPassword,UserMail,UserName,UserCode,UserPhone,UserRole,Activity,Description,
+        (SELECT ProvinceName from province where ProvinceCode = UserProvince )as ProvinceInfo,UserProvince,UserArea,
+        (SELECT AreaName FROM area where AreaCode = UserArea)as AreaInfo
+        from user where LoginName = #{LoginName} limit 1
+    </select>
+
+
+    <update id="UpdateUserInfo" parameterType="map">
+        UPDATE `user`SET
+        LoginName = #{LoginName},
+        LoginPassword = #{LoginPassword},
+        UserMail = #{UserMail},
+        UserName = #{UserName},
+        UserPhone = #{UserPhone},
+        <choose>
+            <when test="Activity!=null">
+                Activity = #{Activity},
+            </when>
+        </choose>
+
+        <choose>
+            <when test="UserArea!=null">
+                UserArea = #{UserArea},
+            </when>
+        </choose>
+        Description = #{Description}
+        WHERE
+            UserCode = #{UserCode}
+        AND `Enable` = 1
+    </update>
+
+
+    <update id="DeleteUserInfo" parameterType="string" >
+        UPDATE user set
+        Enable = 0
+        where UserCode=#{UserCode}
+    </update>
+
+    <select id="GetUserInfoForAdmin" parameterType="map" resultType="map">
+        SELECT UserCode,UserName,UserRole,UserPhone,UserMail,
+        (SELECT ProvinceName FROM province AS p WHERE p.ProvinceCode = u.UserProvince) AS ProvinceInfo,UserProvince,UserArea,LoginName,
+        (SELECT AreaName FROM area AS a WHERE a.AreaCode = u.UserArea ) AS AreaInfo,
+        Activity,Description FROM `user` AS u
+        WHERE
+        LeaderCode = #{LeaderCode}
+        <choose>
+            <when test="UserName!=null">
+                AND UserName LIKE "%"#{UserName}"%"
+            </when>
+        </choose>
+        <choose>
+            <when test="UserCode!=null">
+                AND UserCode LIKE "%"#{UserCode}"%"
+            </when>
+        </choose>
+        <choose>
+            <when test="Activity!=null">
+                AND Activity = #{Activity}
+            </when>
+        </choose>
+        and u.Enable =1
+    </select>
+
+    <select id="GetUserInfoForRoot" parameterType="map" resultType="map">
+        SELECT UserCode,UserName,UserRole,UserPhone,UserMail,
+        (SELECT ProvinceName FROM province AS p WHERE p.ProvinceCode = u.UserProvince) AS ProvinceInfo,UserProvince,UserArea,LoginName,
+        (SELECT AreaName FROM area AS a WHERE a.AreaCode = u.UserArea ) AS AreaInfo,
+        Activity,Description FROM `user` AS u
+        WHERE
+        1=1
+        <choose>
+            <when test="UserName!=null">
+                AND UserName LIKE "%"#{UserName}"%"
+            </when>
+        </choose>
+        <choose>
+            <when test="UserCode!=null">
+                AND UserCode LIKE "%"#{UserCode}"%"
+            </when>
+        </choose>
+        and u.Enable = 1
+    </select>
+
+
+</mapper>
